@@ -9,6 +9,7 @@ class Blog{
         this.messageCount = obj.messageCount || 0;
         this.like = obj.like || 0;
         this.dislike = obj.dislike || 0;
+        this.delete= obj.delete || false;
     }
     toString(){
         return JSON.stringify(this);
@@ -44,7 +45,8 @@ class Bynorth{
             'name': name,         //作者暱稱
             'messageCount': 0,  //留言數
             'like': 0,          //like數
-            'dislike': 0        //dislike數
+            'dislike': 0,        //dislike數
+            'delete': false
         })
         this.blog.put(blogId,newBlog);
         var r={
@@ -54,7 +56,7 @@ class Bynorth{
         console.log(r);
         return r;
     }
-    getPost(id){
+    getPost(option){
         return this.blog.get(id)
     }
 }

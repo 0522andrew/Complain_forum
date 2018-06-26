@@ -57,7 +57,18 @@ class Bynorth{
         return r;
     }
     getPost(option){
-        return this.blog.get(id)
+        if(option==0){
+            let begin = this.blog_count-1;
+            let end = this.blog_count-250;
+            if(end<0)end=0;
+            let arr=new Array();
+            for(let i=begin;i>=end;i--){
+                let b=this.blog.get(i);
+                if(!b.delete)
+                    arr.push(b);
+            }
+            return arr;
+        }
     }
 }
 module.exports = Bynorth;

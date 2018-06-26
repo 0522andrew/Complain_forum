@@ -20,7 +20,7 @@ class Bynorth{
         LocalContractStorage.defineProperty(this,'blog_count',null)
         LocalContractStorage.defineMapProperty(this,'blog',{
             parse: function (text) {
-                obj=JSON.parse(text);
+                let obj=JSON.parse(text);
                 return new Blog(obj);
             },
             stringify: function (o) {
@@ -37,7 +37,7 @@ class Bynorth{
     addPost(content,hash,name) {
         let blogId = this.blog_count++;
         let time = new Date();
-        newBlog=new Blog({
+        let newBlog=new Blog({
             'content' : content,     //文章內容
             'time': time,         //時間
             'author': hash,       //作者地址

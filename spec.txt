@@ -1,0 +1,110 @@
+資料表
+    blog
+    {   
+        'key': "",          //blog_count
+        'value':{
+            'content' : "",     //文章內容
+            'time': "",         //時間
+            'author': "",       //作者地址
+            'name': "",         //作者暱稱
+            'messageCount': 0,  //留言數
+            'like': 0,          //like數
+            'dislike': 0        //dislike數
+        }
+    }
+
+    message
+    {   
+        'key': "",          // blog_count-message_count
+        'value':{
+            'content' : "",     //內容
+            'time': "",         //時間
+            'author': "",       //作者地址
+            'name': "",         //作者暱稱
+            'like': 0,          //like數
+            'dislike': 0        //dislike數
+        }
+    }
+
+    whetherLikeOrDislike
+    {
+        "key": "",       //blog 或 message的id＋作者的地址
+        "value":{
+            'status': 0(無) or 1(踩) or 2(讚)
+        }
+    }
+
+後端function
+    init
+
+    addPost(
+        string content,     //文章內容
+        string hash,        //作者hash
+        string name         //作者匿名
+    ){
+        return {
+            date time,      //時間
+            string blogId   //blog的Id
+        };
+    }
+    0 : 文章為空
+    1 : hash地址錯誤
+
+    addMessage(
+        string blogId,      //blog的Id
+        string content,     //留言內容
+        string hash,        //作者hash
+        string name         //作者匿名
+    ){
+        return {
+            date time,          //時間
+            string messageId    //message的Id
+        };
+    }
+    0 : 文章不存在
+    1 : hash地址錯誤
+    2 : 留言為空
+    
+    blogLikeDislike(        //判斷是否刪文(讚加踩超過一定數字時，進行比例判斷)
+        string hash,        //使用者hash
+        string blogId,      //blog的Id
+        bool likeDislike    //讚true或踩false
+    ){
+        return true;
+    }
+    0 : 文章不存在
+    1 : hash地址錯誤
+    2 : 已經按過在讚或踩
+
+    messageLikeDislike(     //判斷是否刪文(讚加踩超過一定數字時，進行比例判斷)
+        string hash,        //使用者hash
+        string messageID,   //message的Id
+        bool likeDislike    //讚true或踩false
+    ){
+        return true;
+    }
+    0 : 文章不存在
+    1 : hash地址錯誤
+    2 : 已經按過在讚或踩
+
+    get_post(
+        string option           //0:last 1:hot 2:一週精華
+    ){
+        return array of blog;   //blog所組成的array(沒有就回空array)
+    }
+    0 : option給錯值
+
+    get_message(
+        string blog_id              //blog的Id
+    ){
+        return array of message;    //message所組成的array(沒有就回空array)
+    }
+    0 : 沒那則blog
+
+    get_like(
+        string id,      //message的id或blog的id
+        string hash     //使用者hash
+    ){
+        return status;  //0(無) or 1(踩) or 2(讚)
+    }
+    0 : 沒那則blog或沒那則message

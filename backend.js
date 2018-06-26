@@ -32,7 +32,7 @@ class Message{
 
 class Bynorth{
     constructor(){
-        LocalContractStorage.defineProperty(this,'blog_count',null)
+        LocalContractStorage.defineProperty(this,'blogCount',null)
         LocalContractStorage.defineMapProperty(this,'blog',{
             parse: function (text) {
                 let obj=JSON.parse(text);
@@ -53,17 +53,17 @@ class Bynorth{
         })
     }
     init(){
-        this.blog_count = 0;
+        this.blogCount = 0;
     }
     test(){
-        return this.blog_count;
+        return this.blogCount;
     }
     addPost(content,hash,name) {
         if(content==null||content=="")
             return {'error':0};
         // if(!Blockchain.verifyAddress(hash))
         //     return {'error':1};
-        let blogId = this.blog_count++;
+        let blogId = this.blogCount++;
         let time = new Date();
         let newBlog=new Blog({
             'content' : content,     //文章內容
@@ -114,8 +114,8 @@ class Bynorth{
     }
     getPost(option){
         if(option==0){
-            let begin = this.blog_count-1;
-            let end = this.blog_count-250;
+            let begin = this.blogCount-1;
+            let end = this.blogCount-250;
             if(end<0)end=0;
             let arr=new Array();
             for(let i=begin;i>=end;i--){
@@ -125,6 +125,20 @@ class Bynorth{
             }
             return arr;
         }
+    }
+    getMessage(blogId){
+        let b = this.blog.get(blogId);     
+        if(b==null)
+            return{'error':0};   
+        let begin = 0;
+        let end = b.messageCount;
+        let arr=new Array();
+        for(let i=begin;i<end;i++){
+            let m=this.message.get(blogId+'-'+i);
+            if(!m.delete)
+                arr.push(m);
+        }
+        return arr;
     }
 }
 module.exports = Bynorth;

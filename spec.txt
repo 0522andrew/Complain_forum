@@ -111,7 +111,7 @@
     }
 
     get_message(
-        string blog_id              //blog的Id
+        string blogId              //blog的Id
     ) {
         return array of message;    //message所組成的array(沒有就回空array)(250則)
     }

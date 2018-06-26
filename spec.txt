@@ -1,111 +1,124 @@
-è³‡æ–™è¡¨
+ÙYÁÏ±í
     blog
     {   
         'key': "",          //blog_count
-        'value':{
-            'content' : "",     //æ–‡ç« å…§å®¹
-            'time': "",         //æ™‚é–“
-            'author': "",       //ä½œè€…åœ°å€
-            'name': "",         //ä½œè€…æš±ç¨±
-            'messageCount': 0,  //ç•™è¨€æ•¸
-            'like': 0,          //likeæ•¸
-            'dislike': 0,        //dislikeæ•¸
-            'delete':false
+        'value': {
+            'content' : "",     //ÎÄÕÂƒÈÈİ
+            'time': "",         //•rég
+            'author': "",       //×÷ÕßµØÖ·
+            'name': "",         //×÷Õß•¿·Q
+            'messageCount': 0,  //ÁôÑÔ”µ
+            'like': 0,          //like”µ
+            'dislike': 0        //dislike”µ
         }
     }
 
     message
     {   
         'key': "",          // blog_count-message_count
-        'value':{
-            'content' : "",     //å…§å®¹
-            'time': "",         //æ™‚é–“
-            'author': "",       //ä½œè€…åœ°å€
-            'name': "",         //ä½œè€…æš±ç¨±
-            'like': 0,          //likeæ•¸
-            'dislike': 0        //dislikeæ•¸
+        'value': {
+            'content': "",     // ƒÈÈİ
+            'time': "",         // •rég
+            'author': "",       // ×÷ÕßµØÖ·
+            'name': "",         // ×÷Õß•¿·Q
+            'like': 0,          // like”µ
+            'dislike': 0        // dislike”µ
         }
     }
 
     whetherLikeOrDislike
     {
-        "key": "",       //blog æˆ– messageçš„idï¼‹ä½œè€…çš„åœ°å€
-        "value":{
-            'status': 0(ç„¡) or 1(è¸©) or 2(è®š)
+        'key': "",       //blog »ò message µÄid£«×÷ÕßµÄµØÖ·
+        'value': {
+            'status': 0(Ÿo) or 1(²È) or 2(×“)
         }
     }
 
-å¾Œç«¯function
+    author
+    {
+        'key': "",      // ×÷ÕßµØÖ·£¬ÓÉåX°ü²å¼ş«@µÃ
+        'value': {
+            'blogsID': array of blogID     // ×÷Õß°l±íµÄ blog
+        }
+    }
+    
+áá¶Ëfunction
     init
 
     addPost(
-        string content,     //æ–‡ç« å…§å®¹
-        string hash,        //ä½œè€…hash
-        string name         //ä½œè€…åŒ¿å
-    ){
+        string content,     //ÎÄÕÂƒÈÈİ
+        string hash,        //×÷Õßhash
+        string name         //×÷ÕßÄäÃû
+    ) {
         return {
-            date time,      //æ™‚é–“
-            string blogId   //blogçš„Id
+            date time,      //•rég
+            string blogId   //blogµÄId
         };
     }
-    0 : æ–‡ç« ç‚ºç©º
-    1 : hashåœ°å€éŒ¯èª¤
+    0 : ÎÄÕÂé¿Õ
+    1 : hashµØÖ·åeÕ`
 
     addMessage(
-        string blogId,      //blogçš„Id
-        string content,     //ç•™è¨€å…§å®¹
-        string hash,        //ä½œè€…hash
-        string name         //ä½œè€…åŒ¿å
-    ){
+        string blogId,      //blogµÄId
+        string content,     //ÁôÑÔƒÈÈİ
+        string hash,        //×÷Õßhash
+        string name         //×÷ÕßÄäÃû
+    ) {
         return {
-            date time,          //æ™‚é–“
-            string messageId    //messageçš„Id
+            date time,          //•rég
+            string messageId    //messageµÄId
         };
     }
-    0 : æ–‡ç« ä¸å­˜åœ¨
-    1 : hashåœ°å€éŒ¯èª¤
-    2 : ç•™è¨€ç‚ºç©º
+    0 : ÎÄÕÂ²»´æÔÚ
+    1 : hashµØÖ·åeÕ`
+    2 : ÁôÑÔé¿Õ
     
-    blogLikeDislike(        //åˆ¤æ–·æ˜¯å¦åˆªæ–‡(è®šåŠ è¸©è¶…éä¸€å®šæ•¸å­—æ™‚ï¼Œé€²è¡Œæ¯”ä¾‹åˆ¤æ–·)
-        string hash,        //ä½¿ç”¨è€…hash
-        string blogId,      //blogçš„Id
-        bool likeDislike    //è®štrueæˆ–è¸©false
-    ){
+    blogLikeDislike(        //ÅĞ”àÊÇ·ñ„hÎÄ(×“¼Ó²È³¬ß^Ò»¶¨”µ×Ö•r£¬ßMĞĞ±ÈÀıÅĞ”à)
+        string hash,        //Ê¹ÓÃÕßhash
+        string blogId,      //blogµÄId
+        bool likeDislike    //×“true»ò²Èfalse
+    ) {
         return true;
     }
-    0 : æ–‡ç« ä¸å­˜åœ¨
-    1 : hashåœ°å€éŒ¯èª¤
-    2 : å·²ç¶“æŒ‰éåœ¨è®šæˆ–è¸©
+    0 : ÎÄÕÂ²»´æÔÚ
+    1 : hashµØÖ·åeÕ`
+    2 : ÒÑ½›°´ß^ÔÚ×“»ò²È
 
-    messageLikeDislike(     //åˆ¤æ–·æ˜¯å¦åˆªæ–‡(è®šåŠ è¸©è¶…éä¸€å®šæ•¸å­—æ™‚ï¼Œé€²è¡Œæ¯”ä¾‹åˆ¤æ–·)
-        string hash,        //ä½¿ç”¨è€…hash
-        string messageID,   //messageçš„Id
-        bool likeDislike    //è®štrueæˆ–è¸©false
-    ){
+    messageLikeDislike(     //ÅĞ”àÊÇ·ñ„hÎÄ(×“¼Ó²È³¬ß^Ò»¶¨”µ×Ö•r£¬ßMĞĞ±ÈÀıÅĞ”à)
+        string hash,        //Ê¹ÓÃÕßhash
+        string messageID,   //messageµÄId
+        bool likeDislike    //×“true»ò²Èfalse
+    ) {
         return true;
     }
-    0 : æ–‡ç« ä¸å­˜åœ¨
-    1 : hashåœ°å€éŒ¯èª¤
-    2 : å·²ç¶“æŒ‰éåœ¨è®šæˆ–è¸©
+    0 : ÎÄÕÂ²»´æÔÚ
+    1 : hashµØÖ·åeÕ`
+    2 : ÒÑ½›°´ß^ÔÚ×“»ò²È
 
     get_post(
-        string option           //0:last 1:hot 2:ä¸€é€±ç²¾è¯
-    ){
-        return array of blog;   //blogæ‰€çµ„æˆçš„array(æ²’æœ‰å°±å›ç©ºarray)(250å‰‡)
+        string option           //0:last 1:hot 2:Ò»ßL¾«ÈA
+    ) {
+        return array of blog;   //blogËù½M³ÉµÄarray(›]ÓĞ¾Í»Ø¿Õarray)
     }
-    0 : optionçµ¦éŒ¯å€¼
+    0 : option½oåeÖµ
+
+    get_authorBlog(
+        string hash             // ×÷ÕßåX°üµØÖ·
+    ) {
+        return array of blog;   //blogËù½M³ÉµÄarray(›]ÓĞ¾Í»Ø¿Õarray)
+    }
 
     get_message(
-        string blog_id              //blogçš„Id
-    ){
-        return array of message;    //messageæ‰€çµ„æˆçš„array(æ²’æœ‰å°±å›ç©ºarray)
+        string blog_id              //blogµÄId
+    ) {
+        return array of message;    //messageËù½M³ÉµÄarray(›]ÓĞ¾Í»Ø¿Õarray)
     }
-    0 : æ²’é‚£å‰‡blog
+    0 : ›]ÄÇ„tblog
 
     get_like(
-        string id,      //messageçš„idæˆ–blogçš„id
-        string hash     //ä½¿ç”¨è€…hash
-    ){
-        return status;  //0(ç„¡) or 1(è¸©) or 2(è®š)
+        string id,      //messageµÄid»òblogµÄid
+        string hash     //Ê¹ÓÃÕßhash
+    ) {
+        return status;  //0(Ÿo) or 1(²È) or 2(×“)
     }
-    0 : æ²’é‚£å‰‡blogæˆ–æ²’é‚£å‰‡message
+    0 : ›]ÄÇ„tblog»ò›]ÄÇ„tmessage

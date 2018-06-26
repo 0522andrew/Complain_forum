@@ -9,6 +9,7 @@ class Blog{
         this.messageCount = obj.messageCount || 0;
         this.like = obj.like || 0;
         this.dislike = obj.dislike || 0;
+        this.delete= obj.delete || false;
     }
     toString(){
         return JSON.stringify(this);
@@ -20,7 +21,7 @@ class Bynorth{
         LocalContractStorage.defineProperty(this,'blog_count',null)
         LocalContractStorage.defineMapProperty(this,'blog',{
             parse: function (text) {
-                obj=JSON.parse(text);
+                let obj=JSON.parse(text);
                 return new Blog(obj);
             },
             stringify: function (o) {
@@ -37,14 +38,15 @@ class Bynorth{
     addPost(content,hash,name) {
         let blogId = this.blog_count++;
         let time = new Date();
-        newBlog=new Blog({
+        let newBlog=new Blog({
             'content' : content,     //文章內容
             'time': time,         //時間
             'author': hash,       //作者地址
             'name': name,         //作者暱稱
             'messageCount': 0,  //留言數
             'like': 0,          //like數
-            'dislike': 0        //dislike數
+            'dislike': 0,        //dislike數
+            'delete': false
         })
         this.blog.put(blogId,newBlog);
         var r={
@@ -54,7 +56,7 @@ class Bynorth{
         console.log(r);
         return r;
     }
-    getPost(id){
+    getPost(option){
         return this.blog.get(id)
     }
 }

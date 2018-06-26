@@ -9,7 +9,8 @@
             'name': "",         //作者暱稱
             'messageCount': 0,  //留言數
             'like': 0,          //like數
-            'dislike': 0        //dislike數
+            'dislike': 0,        //dislike數
+            'delete':false
         }
     }
 
@@ -90,7 +91,7 @@
     get_post(
         string option           //0:last 1:hot 2:一週精華
     ){
-        return array of blog;   //blog所組成的array(沒有就回空array)
+        return array of blog;   //blog所組成的array(沒有就回空array)(250則)
     }
     0 : option給錯值
 

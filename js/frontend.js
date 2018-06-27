@@ -14,23 +14,42 @@ neb.setRequest(new Nebulas.HttpRequest("https://testnet.nebulas.io"));
 var dappAddress = 'n1eM7UXtVosJF7S6ht9q6Mrh8Wftkm4X7wy';   // 合約地址
 var serialNumber;     //交易序列号
 
+// nebulas call test
 function test() {
     api.call({
         chainID: 1,
         from: dappAddress,
         to: dappAddress,
         value: 0,
-        nonce: 0,
+        nonce: 1,
         gasPrice: 1000000,
         gasLimit: 2000000,
         contract: {
-            function: "test",
-            args: ""
+            // function: "test",
+            // function: "addPost",
+            function: "getPost",
+            args: '["0"]'
+            // args: '["123", "n1V4ucZz1kAkffHik4WBeEu3fiFf7gcfMEd", "456"]'
         }
     }).then(function(resp) {
         // var result = resp.result;
-        console.log("im in")
+        // console.log("im in")
         console.log(resp);
         //code
     });
+}
+
+// nebpay call test
+function test2() {
+    var to = dappAddress;
+    var value = 0;
+    var callFunction = "addPost";
+    var callArgs = '["123", "n1V4ucZz1kAkffHik4WBeEu3fiFf7gcfMEd", "456"]';
+    serialNumber = nebPay.call(to, value, callFunction, callArgs);
+
+    nebPay.queryPayInfo(serialNumber)   //search transaction result from server (result upload to server by app)
+            .then()
+            .catch(function (err) {
+                console.log(err);
+            });
 }

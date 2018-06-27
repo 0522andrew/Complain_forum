@@ -28,7 +28,7 @@ $(document).ready(() => {
             nickname
         ]
         
-        if (content === '') {
+        if (content !== '') {
             addPost(JSON.stringify(callArgs));
         }
     }

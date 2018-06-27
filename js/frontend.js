@@ -8,6 +8,7 @@ var NebPay = require("nebpay");
 var neb = new Nebulas.Neb();
 var api = neb.api;
 var nebPay = new NebPay();
+var userAddrerss;
 
 neb.setRequest(new Nebulas.HttpRequest("https://testnet.nebulas.io"));
 
@@ -39,12 +40,11 @@ function test() {
     });
 }
 
-// nebpay call test
-function test2() {
+// nebpay call addPost
+function addPost(callArgs) {
     var to = dappAddress;
     var value = 0;
     var callFunction = "addPost";
-    var callArgs = '["123", "n1V4ucZz1kAkffHik4WBeEu3fiFf7gcfMEd", "456"]';
     serialNumber = nebPay.call(to, value, callFunction, callArgs);
 
     nebPay.queryPayInfo(serialNumber)   //search transaction result from server (result upload to server by app)
@@ -53,3 +53,25 @@ function test2() {
                 console.log(err);
             });
 }
+
+// 獲取用戶地址
+function getUserAddress() {
+    console.log("********* get account ************")
+    window.postMessage({
+        "target": "contentscript",
+        "data":{
+        },
+        "method": "getAccount",
+    }, "*");
+}
+
+// listen message from contentscript
+window.addEventListener('message', function(e) {
+    // e.detail contains the transferred data (can
+    console.log("recived by page:" + e + ", e.data:" + JSON.stringify(e.data));
+    if (!!e.data.data && !!e.data.data.account) {
+        userAddrerss = e.data.data.account;
+    }
+})
+getUserAddress()
+

@@ -23,12 +23,12 @@ $(document).ready(() => {
     $("#submit-blog-btn").click(function() {
         var nickname = $("#submit-nickname").val();
         var content = $("#submit-content").val();
-        var callArgs = {
-            "content" : content,
-            "userAddrerss" : userAddrerss,
-            "nickname" : nickname
-        }
-        addPost(callArgs)
+        var callArgs = [
+            content,
+            userAddrerss,
+            nickname
+        ]
+        addPost(JSON.stringify(callArgs))
     })
 });
 

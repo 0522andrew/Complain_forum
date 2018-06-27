@@ -2,37 +2,35 @@
 
 "use strict";
 
-var nebulas = require("nebulas");
+var Nebulas = require("nebulas");
 var NebPay = require("nebpay");
 
-var neb = new nebulas.Neb();
-var api = new Neb().api;
+var neb = new Nebulas.Neb();
+var api = neb.api;
 var nebPay = new NebPay();
 
-neb.setRequest(new nebulas.HttpRequest("https://testnet.nebulas.io"));
+neb.setRequest(new Nebulas.HttpRequest("https://testnet.nebulas.io"));
 
 var dappAddress = 'n1eM7UXtVosJF7S6ht9q6Mrh8Wftkm4X7wy';   // 合約地址
 var serialNumber;     //交易序列号
 
 function test() {
-
-    var from = dappAddress;
-    var to = dappAddress;
-    var value = "0";
-    var nonce = "0";
-    var gas_price = "1000000";
-    var gas_limit = " 2000000";
-    var callFunction = "test";
-    var callArgs = "";
-    var contract = {
-        "function": callFunction,
-        "args": callArgs
-    }
-
-    api.call(from, to, value, nonce, gas_price, gas_limit, contract).then(function(resp) {
-        var result = resp.result;
-        console.log(result);
+    api.call({
+        chainID: 1,
+        from: dappAddress,
+        to: dappAddress,
+        value: 0,
+        nonce: 0,
+        gasPrice: 1000000,
+        gasLimit: 2000000,
+        contract: {
+            function: "test",
+            args: ""
+        }
+    }).then(function(resp) {
+        // var result = resp.result;
+        console.log("im in")
+        console.log(resp);
         //code
     });
 }
-// },{"./lib/account":1,"./lib/httprequest":4,"./lib/neb":5,"./lib/transaction":7,"./lib/utils/crypto-utils":8,"./lib/utils/unit":9,"./lib/utils/utils":10}]},{},[]);

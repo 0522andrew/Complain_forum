@@ -1,7 +1,3 @@
-footer{
-    text-align: center;
-}
-
 .blog-rapper{
     max-width: 800px;
     margin-left: auto;
@@ -38,6 +34,7 @@ html {
 }
 
 footer {
+    text-align: center;
     background-color: #e0e0e0;
     position: absolute;
     left: 0;
@@ -47,14 +44,36 @@ footer {
 }
 
 main {
-    padding-bottom: 20px;
+    padding-bottom: 40px;
+    position: relative;
+}
+
+.add-btn {
+    position: fixed;
+    right: 20px;
+    bottom: 60px;
+    overflow: hidden;
+}
+
+.add-btn-img {
+    width: 5vw;
 }
 
 .github-img {
-    height: 30px;
+    height: 50px;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
 .github-img:hover {
+    filter:  opacity(70%);
+}
+
+.nebulas-link-img{
+    height: 50px;
+}
+
+.nebulas-link-img:hover {
     filter:  opacity(70%);
 }
 

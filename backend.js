@@ -15,6 +15,7 @@ class Blog{
         return JSON.stringify(this);
     }
 }
+
 class Message{
     constructor(obj){
         this.content = obj.content;
@@ -24,6 +25,15 @@ class Message{
         this.like = obj.like || 0;
         this.dislike = obj.dislike || 0;
         this.delete= obj.delete || false;
+    }
+    toString(){
+        return JSON.stringify(this);
+    }
+}
+
+class whetherLikeOrDislike{
+    constructor(obj){
+        this.status=obj.status; //0(無) or 1(踩) or 2(讚)
     }
     toString(){
         return JSON.stringify(this);
@@ -50,7 +60,16 @@ class Bynorth{
             stringify: function (o) {
                 return o.toString();
             }
-        })
+        });
+        LocalContractStorage.defineMapProperty(this,'likeOrDislike',{
+            parse: function (text) {
+                let obj=JSON.parse(text);
+                return new whetherLikeOrDislike(obj);
+            },
+            stringify: function (o) {
+                return o.toString();
+            }
+        });
     }
     init(){
         this.blogCount = 0;
@@ -139,6 +158,30 @@ class Bynorth{
                 arr.push(m);
         }
         return arr;
+    }
+    blogLikeDislike(hash,blogId,likeDislike){
+        let b=this.blog.get(blogId);
+        if(!b)
+            return {'error':0};
+        // if(!Blockchain.verifyAddress(hash))
+        //     return {'error':1};
+        let userStatusId=blogId+'+'+hash;
+        let userStatus=this.likeOrDislike.get(userStatusId);
+        if(!userStatus){
+            userStatus = new whetherLikeOrDislike({
+                'status':likeDislike?2:1    ////0(無) or 1(踩) or 2(讚)
+            })
+            this.likeOrDislike.set(userStatusId,userStatus);
+        }
+        else{
+            if((likeDislike && userStatus.status==2)||(!likeDislike && userStatus.status==1))
+                userStatus.status=0;
+            else
+                userStatus.status=likeDislike?2:1;
+            this.likeOrDislike.set(userStatusId,userStatus);
+        }
+        console.log(userStatus);
+        return true;
     }
 }
 module.exports = Bynorth;

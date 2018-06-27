@@ -1,3 +1,26 @@
 footer{
     text-align: center;
 }
+
+.blog-rapper{
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.blog{
+    background-color: #eeeeee;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+.author, .content{
+    margin-left: 10px;
+}
+/* @media screen and (max-width: 600px) {
+    .blog-rapper{
+        width:600px;
+
+    }
+} */

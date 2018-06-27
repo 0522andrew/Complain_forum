@@ -27,7 +27,10 @@ $(document).ready(() => {
             userAddrerss,
             nickname
         ]
-        addPost(JSON.stringify(callArgs))
+        
+        if (content === '') {
+            addPost(JSON.stringify(callArgs));
+        }
     }
 });
 

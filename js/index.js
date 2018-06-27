@@ -19,8 +19,7 @@ $(document).ready(() => {
         event.currentTarget.textContent = "👎🏿";
     });
 
-    // 點擊 add 添加文章
-    $("#submit-blog-btn").click(function() {
+    postBlog = function() {
         var nickname = $("#submit-nickname").val();
         var content = $("#submit-content").val();
         var callArgs = [
@@ -29,6 +28,6 @@ $(document).ready(() => {
             nickname
         ]
         addPost(JSON.stringify(callArgs))
-    })
+    }
 });
 

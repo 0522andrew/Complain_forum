@@ -15,9 +15,49 @@ footer{
     border-radius: 10px;
 }
 
+/* by https://www.w3schools.com/css/css_float.asp */
+.blog::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.thumb-up-pre, .thumb-down-pre{
+    float: right;
+}
+
 .author, .content{
     margin-left: 10px;
 }
+
+
+/* make footer stick to the bottom by https://stackoverflow.com/questions/3443606/make-footer-stick-to-bottom-of-page-correctly */
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+footer {
+    background-color: #e0e0e0;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    overflow: hidden;
+}
+
+main {
+    padding-bottom: 20px;
+}
+
+.github-img {
+    height: 30px;
+}
+
+.github-img:hover {
+    filter:  opacity(70%);
+}
+
 /* @media screen and (max-width: 600px) {
     .blog-rapper{
         width:600px;

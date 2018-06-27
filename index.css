@@ -77,6 +77,14 @@ main {
     filter:  opacity(70%);
 }
 
+.input-group-text{
+    width: 100px;
+}
+
+/* .input-group-prepend{
+    text-align: center;
+} */
+
 /* @media screen and (max-width: 600px) {
     .blog-rapper{
         width:600px;

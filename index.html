@@ -4,7 +4,7 @@
         <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>Nebulas Complain Forum</title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <link rel="stylesheet" href="index.css">
         <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
@@ -14,6 +14,36 @@
         <script src="js/frontend.js"></script>
     </head>
     <body>
+        <div class="modal fade" id="add_blog_model" tabindex="-1" role="dialog" aria-labelledby="add_blog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">add blog</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Nickname:</span>
+                            </div>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Content:</span>
+                            </div>
+                            <textarea type="text" class="form-control" rows="5" required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="submit-blog-btn">add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -45,57 +75,15 @@
                     <b class="thumb-down-pre">👎🏿</b>
                     <b class="thumb-up-pre">👍🏿</b>
                 </div>
-                <div class="blog">
-                    <p class="author">作者</p>
-                    <p class="content">blablablablablablablablablablablablablablablablablablablabla</p>
-                    <b class="thumb-down-pre">👎🏿</b>
-                    <b class="thumb-up-pre">👍🏿</b>
-                </div>
-                <div class="blog">
-                    <p class="author">作者</p>
-                    <p class="content">blablablablablablablablablablablablablablablablablablablabla</p>
-                    <b class="thumb-down-pre">👎🏿</b>
-                    <b class="thumb-up-pre">👍🏿</b>
-                </div>
-                <div class="blog">
-                    <p class="author">作者</p>
-                    <p class="content">blablablablablablablablablablablablablablablablablablablabla</p>
-                    <b class="thumb-down-pre">👎🏿</b>
-                    <b class="thumb-up-pre">👍🏿</b>
-                </div>
-                <div class="blog">
-                    <p class="author">作者</p>
-                    <p class="content">blablablablablablablablablablablablablablablablablablablabla</p>
-                    <b class="thumb-down-pre">👎🏿</b>
-                    <b class="thumb-up-pre">👍🏿</b>
-                </div>
-                <div class="blog">
-                    <p class="author">作者</p>
-                    <p class="content">blablablablablablablablablablablablablablablablablablablabla</p>
-                    <b class="thumb-down-pre">👎🏿</b>
-                    <b class="thumb-up-pre">👍🏿</b>
-                </div>
-                <div class="blog">
-                    <p class="author">作者</p>
-                    <p class="content">blablablablablablablablablablablablablablablablablablablabla</p>
-                    <b class="thumb-down-pre">👎🏿</b>
-                    <b class="thumb-up-pre">👍🏿</b>
-                </div>
-                <div class="blog">
-                    <p class="author">作者</p>
-                    <p class="content">blablablablablablablablablablablablablablablablablablablabla</p>
-                    <b class="thumb-down-pre">👎🏿</b>
-                    <b class="thumb-up-pre">👍🏿</b>
-                </div>
             </div>
             <div class="add-btn">
-                <img class="add-btn-img" src="image/plus.png" alt="add new blog">
+                <img class="add-btn-img" src="image/plus.png" alt="add new blog" data-toggle="modal" data-target="#add_blog_model">
             </div>
         </main>
         <footer>
             <b>@ copyright 2018 Complain Forum</b>
             <a href="https://github.com/0522andrew/Complain_forum/" target="_blank"><img class="github-img" src="image/GitHub-Mark-120px-plus.png" alt="our github"></a>
-            <a href="http://" target="_blank"><img class="nebulas-link-img" src="image/NebulasLogoIcon.svg" alt="offical nebulas website"></a>
+            <a href="https://incentive.nebulas.io/cn/signup.html?invite=yc4Jb" target="_blank"><img class="nebulas-link-img" src="image/NebulasLogoIcon.svg" alt="offical nebulas website"></a>
         </footer>
         <script src="js/index.js"></script>
     </body>

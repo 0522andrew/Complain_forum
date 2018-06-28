@@ -41,6 +41,26 @@ $(document).ready(() => {
         }
     }
 
-    $.notify("hello")
+    
+    // $("#generate").click(() => {
+    //     $.notify({
+    //         // options
+    //         message: "Querying, please wait." ,
+    //         target: "generate"
+    //     },{
+    //         // settings
+    //         element: "body",
+    //         position: null,
+    //         offset: 20,
+    //         placement: {
+    //             // from: "center",
+    //             align: "right"
+    //         },
+    //         spacing: 20,
+    //         newest_on_top: true,
+    //         timer: 5000,
+    //         z_index: 99999,
+    //         type: 'info'
+    //     });
+    // })   
 });
-

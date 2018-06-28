@@ -80,21 +80,35 @@ function initLatest() {
             args: JSON.stringify([0])
         }
     }).then(function (resp) {
-        console.log(resp);
+        //console.log(resp);
         if (resp.result === "") {
-            initLatest();
+            //initLatest();
         } else {
             latestBlogsData = resp.result;
             //$("#latest-section").append()
             let data = JSON.parse(resp.result);
             for (let i = 0; i < data.length; i++) {
-                console.log($("#latest-section").append('<div class="blog">'));
-                $('<p/ class="author">').text(data[i].author).appendTo("#latest-section");
-                $('<p/ class="content">').text(data[i].content).appendTo("#latest-section");
-                $('<b/ class="thumb-down-pre">').text("👎🏿").appendTo("#latest-section");
-                $('<b/ class="thumb-up-pre">').text("👍🏿").appendTo("#latest-section");
-                $("#latest-section").append('</div>')
+                $("#latest-section").append('<div class="blog" id="blog-'+data[i].blogId+'">');
+                if (data[i].name === ""){
+                    $('<p/ class="author" style="color: orange;">').text("Anonymous").appendTo("#blog-"+data[i].blogId);
+                }else{
+                    $('<p/ class="author">').text(data[i].name).appendTo("#blog-"+data[i].blogId);
+                }
+                $('<p/ class="content">').text(data[i].content).appendTo("#blog-"+data[i].blogId);
+                $("#blog-"+data[i].blogId).append('<div class="info-section"><b class="thumb-up-pre">👍🏿</b><b class="like-count">'+data[i].like+'</b><b class="thumb-down-pre">👎🏿</b><b class="dislike-count">'+data[i].dislike+'</b><img class="message-img message-btn" src="image/speech-bubble.png"><b class="message-count">'+data[i].messageCount+'</b></div>')
+                $("#blog-"+data[i].blogId).append('<div class="message-section"></div>')
             }
+            $(".thumb-up-pre").hover((event) => {
+                event.currentTarget.textContent = "👍";
+            }, (event) => {
+                event.currentTarget.textContent = "👍🏿";
+            });
+        
+            $(".thumb-down-pre").hover((event) => {
+                event.currentTarget.textContent = "👎";
+            }, (event) => {
+                event.currentTarget.textContent = "👎🏿";
+            });
         }
     });
 }

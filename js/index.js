@@ -40,7 +40,7 @@ $(document).ready(() => {
             addPost(JSON.stringify(callArgs));
         }
     }
-
+    initLatest()
     
     // $("#generate").click(() => {
     //     $.notify({

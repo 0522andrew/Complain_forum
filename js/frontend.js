@@ -18,6 +18,10 @@ var dappAddress = 'n1ovn4GPda3qnbk8AHXtvWWpwLkscttudzz';   // 合約地址
 var testUser = 'n1SZdYuB9kd6kpLBaCgxrPrV29175st5NVD';
 var serialNumber;     //交易序列号
 
+var latestBlogsData;
+var hotBlogsData;
+var weeklyBlogData;
+
 // nebulas call test
 function test() {
     api.call({
@@ -59,6 +63,39 @@ function getBlog(option) {
         }
     }).then(function(resp) {
         console.log(resp);
+    });
+}
+
+function initLatest(){
+    api.call({
+        chainID: 1,
+        from: dappAddress,
+        to: dappAddress,
+        value: 0,
+        nonce: 1,
+        gasPrice: 1000000,
+        gasLimit: 2000000,
+        contract: {
+            function: "getPost",
+            args: JSON.stringify([0])
+        }
+    }).then(function(resp) {
+        console.log(resp);
+        if (resp.result === ""){
+            initLatest();
+        }else{
+            latestBlogsData = resp.result;
+            //$("#latest-section").append()
+            let data = JSON.parse(resp.result);
+            for (let i = 0;i < data.length; i++){
+                console.log($("#latest-section").append('<div class="blog">'));
+                $('<p/ class="author">').text(data[i].author).appendTo("#latest-section");
+                $('<p/ class="content">').text(data[i].content).appendTo("#latest-section");
+                $('<b/ class="thumb-down-pre">').text("👎🏿").appendTo("#latest-section");
+                $('<b/ class="thumb-up-pre">').text("👍🏿").appendTo("#latest-section");
+                $("#latest-section").append('</div>')
+            }
+        }
     });
 }
 

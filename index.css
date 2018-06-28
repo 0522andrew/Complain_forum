@@ -18,8 +18,13 @@
     display: table;
 }
 
-.thumb-up-pre, .thumb-down-pre{
+.thumb-up-pre, .thumb-down-pre, .dislike-count, .like-count{
     float: right;
+}
+
+.dislike-count, .like-count{
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
 .author, .content{
@@ -80,6 +85,10 @@ main {
 
 .input-group-text{
     width: 100px;
+}
+
+#hot-section, #weekly-section, #myblog-section{
+    display: none;
 }
 
 /* .input-group-prepend{

@@ -44,6 +44,7 @@ footer {
 }
 
 main {
+    padding-top: 45px;
     padding-bottom: 40px;
     position: relative;
 }
@@ -53,11 +54,10 @@ main {
     right: 20px;
     bottom: 60px;
     overflow: hidden;
-    display: hidden;
 }
 
 .add-btn-img {
-    width: 5vw;
+    width: 10vh;
 }
 
 .github-img {

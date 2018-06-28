@@ -19,6 +19,14 @@ $(document).ready(() => {
         event.currentTarget.textContent = "👎🏿";
     });
 
+    $(".add-btn-img").click(() => {
+        if(typeof(webExtensionWallet) === "undefined") {
+            alert("Extension wallet is not installed, please install it first.");
+        }else{
+            $("#add_blog_model").modal({show : true});
+        }
+    })
+
     postBlog = function() {
         var nickname = $("#submit-nickname").val();
         var content = $("#submit-content").val();

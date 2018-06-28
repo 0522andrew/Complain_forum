@@ -43,6 +43,25 @@ function test() {
     });
 }
 
+// nebulas call test
+function getBlog(option) {
+    api.call({
+        chainID: 1,
+        from: dappAddress,
+        to: dappAddress,
+        value: 0,
+        nonce: 1,
+        gasPrice: 1000000,
+        gasLimit: 2000000,
+        contract: {
+            function: "getPost",
+            args: JSON.stringify([option])
+        }
+    }).then(function(resp) {
+        console.log(resp);
+    });
+}
+
 // nebpay call addPost
 function addPost(callArgs) {
     var to = dappAddress;

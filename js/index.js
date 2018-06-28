@@ -40,5 +40,7 @@ $(document).ready(() => {
             addPost(JSON.stringify(callArgs));
         }
     }
+
+    $.notify("hello")
 });
 

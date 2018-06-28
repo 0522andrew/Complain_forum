@@ -9,6 +9,7 @@
     margin-top: 20px;
     margin-bottom: 20px;
     border-radius: 10px;
+    overflow: auto;
 }
 
 /* by https://www.w3schools.com/css/css_float.asp */
@@ -18,13 +19,17 @@
     display: table;
 }
 
-.thumb-up-pre, .thumb-down-pre, .dislike-count, .like-count{
+.info-section{
     float: right;
 }
 
-.dislike-count, .like-count{
+.dislike-count, .like-count, .message-count{
     margin-left: 5px;
     margin-right: 5px;
+}
+
+.message-img {
+    width : 1em;
 }
 
 .author, .content{
@@ -71,7 +76,7 @@ main {
     padding-bottom: 5px;
 }
 
-.github-img:hover {
+.github-img:hover , .message-img:hover{
     filter:  opacity(70%);
 }
 
@@ -89,6 +94,28 @@ main {
 
 #hot-section, #weekly-section, #myblog-section{
     display: none;
+}
+
+.message-input{
+    width: 90%;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.message-section{
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.message-align {
+    width: 100px;
+}
+
+.divide-line{
+    margin-top: 2.5rem;
+    margin-bottom: 0.5rem;
+    border-width: 2px;
 }
 
 /* .input-group-prepend{

@@ -53,6 +53,7 @@ main {
     right: 20px;
     bottom: 60px;
     overflow: hidden;
+    display: hidden;
 }
 
 .add-btn-img {

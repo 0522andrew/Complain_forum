@@ -11,8 +11,11 @@ var nebPay = new NebPay();
 var userAddrerss;
 
 neb.setRequest(new Nebulas.HttpRequest("https://testnet.nebulas.io"));
+// neb.setRequest(new Nebulas.HttpRequest("http://localhost:8685"));      // 本地節點測試
 
-var dappAddress = 'n1eM7UXtVosJF7S6ht9q6Mrh8Wftkm4X7wy';   // 合約地址
+// var dappAddress = 'n1eM7UXtVosJF7S6ht9q6Mrh8Wftkm4X7wy';   // 合約地址
+var dappAddress = 'n1ovn4GPda3qnbk8AHXtvWWpwLkscttudzz';   // 合約地址
+var testUser = 'n1SZdYuB9kd6kpLBaCgxrPrV29175st5NVD';
 var serialNumber;     //交易序列号
 
 // nebulas call test
@@ -29,7 +32,7 @@ function test() {
             // function: "test",
             // function: "addPost",
             function: "getPost",
-            args: '["0"]'
+            args: '[0]'
             // args: '["123", "n1V4ucZz1kAkffHik4WBeEu3fiFf7gcfMEd", "456"]'
         }
     }).then(function(resp) {

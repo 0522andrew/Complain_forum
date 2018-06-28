@@ -14,9 +14,9 @@ neb.setRequest(new Nebulas.HttpRequest("https://testnet.nebulas.io"));
 // neb.setRequest(new Nebulas.HttpRequest("http://localhost:8685"));      // 本地節點測試
 
 // var dappAddress = 'n1eM7UXtVosJF7S6ht9q6Mrh8Wftkm4X7wy';   // 合約地址
-var dappAddress = 'n1ovn4GPda3qnbk8AHXtvWWpwLkscttudzz';   // 合約地址
+var dappAddress = 'n1ovn4GPda3qnbk8AHXtvWWpwLkscttudzz'; // 合約地址
 var testUser = 'n1SZdYuB9kd6kpLBaCgxrPrV29175st5NVD';
-var serialNumber;     //交易序列号
+var serialNumber; //交易序列号
 
 var latestBlogsData;
 var hotBlogsData;
@@ -39,7 +39,7 @@ function test() {
             args: '[0]'
             // args: '["123", "n1V4ucZz1kAkffHik4WBeEu3fiFf7gcfMEd", "456"]'
         }
-    }).then(function(resp) {
+    }).then(function (resp) {
         // var result = resp.result;
         // console.log("im in")
         console.log(resp);
@@ -61,12 +61,12 @@ function getBlog(option) {
             function: "getPost",
             args: JSON.stringify([option])
         }
-    }).then(function(resp) {
+    }).then(function (resp) {
         console.log(resp);
     });
 }
 
-function initLatest(){
+function initLatest() {
     api.call({
         chainID: 1,
         from: dappAddress,
@@ -79,15 +79,15 @@ function initLatest(){
             function: "getPost",
             args: JSON.stringify([0])
         }
-    }).then(function(resp) {
+    }).then(function (resp) {
         console.log(resp);
-        if (resp.result === ""){
+        if (resp.result === "") {
             initLatest();
-        }else{
+        } else {
             latestBlogsData = resp.result;
             //$("#latest-section").append()
             let data = JSON.parse(resp.result);
-            for (let i = 0;i < data.length; i++){
+            for (let i = 0; i < data.length; i++) {
                 console.log($("#latest-section").append('<div class="blog">'));
                 $('<p/ class="author">').text(data[i].author).appendTo("#latest-section");
                 $('<p/ class="content">').text(data[i].content).appendTo("#latest-section");
@@ -104,13 +104,39 @@ function addPost(callArgs) {
     var to = dappAddress;
     var value = 0;
     var callFunction = "addPost";
-    serialNumber = nebPay.call(to, value, callFunction, callArgs);
+   
+    serialNumber =  nebPay.call(to, value, callFunction, callArgs) 
+    // if (serialNumber) {
+    //     $.notify({
+    //         // options
+    //         message: "Querying, please wait." ,
+    //         target: "generate"
+    //     },{
+    //         // settings
+    //         element: "body",
+    //         position: null,
+    //         offset: 20,
+    //         placement: {
+    //             // from: "center",
+    //             align: "right"
+    //         },
+    //         spacing: 20,
+    //         newest_on_top: true,
+    //         delay: 3000,
+    //         timer: 5000,
+    //         z_index: 99999,
+    //         type: 'info'
+    //     });
+    // }
 
-    nebPay.queryPayInfo(serialNumber)   //search transaction result from server (result upload to server by app)
-            .then()
-            .catch(function (err) {
-                console.log(err);
-            });
+    var options = {callback: NebPay.config.testnetUrl}
+    nebPay.queryPayInfo(serialNumber, options) //search transaction result from server (result upload to server by app)
+        .then(function (resp) {
+            console.log(resp)
+        })
+        .catch(function (err) {
+            console.log(err);
+        });
 }
 
 // 獲取用戶地址
@@ -118,14 +144,13 @@ function getUserAddress() {
     console.log("********* get account ************")
     window.postMessage({
         "target": "contentscript",
-        "data":{
-        },
+        "data": {},
         "method": "getAccount",
     }, "*");
 }
 
 // listen message from contentscript
-window.addEventListener('message', function(e) {
+window.addEventListener('message', function (e) {
     // e.detail contains the transferred data (can
     console.log("recived by page:" + e + ", e.data:" + JSON.stringify(e.data));
     if (!!e.data.data && !!e.data.data.account) {
@@ -133,4 +158,3 @@ window.addEventListener('message', function(e) {
     }
 })
 getUserAddress()
-

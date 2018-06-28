@@ -78,7 +78,7 @@ class Bynorth{
         return this.blogCount;
     }
     addPost(content,hash,name) {
-        if(content==null||content=="")
+        if(content===null||content==="")
             return {'error':0};
         // if(!Blockchain.verifyAddress(hash))
         //     return {'error':1};
@@ -104,11 +104,11 @@ class Bynorth{
     }
     addMessage(blogId,content,hash,name){
         let b = this.blog.get(blogId);
-        if(b==null)
+        if(b===null)
             return{'error':0};
         // if(!Blockchain.verifyAddress(hash))
         //     return {'error':1};
-        if(content==null||content=="")
+        if(content===null||content==="")
             return {'error':2};
         let time=new Date();
         let newMessage=new Message({
@@ -132,13 +132,14 @@ class Bynorth{
         return r;
     }
     getPost(option){
-        if(option==0){
+        if(option===0){
             let begin = this.blogCount-1;
             let end = this.blogCount-250;
             if(end<0)end=0;
             let arr=new Array();
             for(let i=begin;i>=end;i--){
                 let b=this.blog.get(i);
+                b.blogId=i;
                 if(!b.delete)
                     arr.push(b);
             }
@@ -147,7 +148,7 @@ class Bynorth{
     }
     getMessage(blogId){
         let b = this.blog.get(blogId);     
-        if(b==null)
+        if(b===null)
             return{'error':0};   
         let begin = 0;
         let end = b.messageCount;
@@ -171,15 +172,25 @@ class Bynorth{
             userStatus = new whetherLikeOrDislike({
                 'status':likeDislike?2:1    ////0(無) or 1(踩) or 2(讚)
             })
+            likeDislike? b.like+=1 : b.dislike+=1;
             this.likeOrDislike.set(userStatusId,userStatus);
         }
         else{
-            if((likeDislike && userStatus.status==2)||(!likeDislike && userStatus.status==1))
+            if(likeDislike && userStatus.status===2){
                 userStatus.status=0;
-            else
+                b.like-=1;
+            }
+            else if(!likeDislike && userStatus.status===1){
+                userStatus.status=0;
+                b.dislike-=1;                
+            }
+            else{
                 userStatus.status=likeDislike?2:1;
+                likeDislike? b.like+=1 : b.dislike+=1;
+            }
             this.likeOrDislike.set(userStatusId,userStatus);
         }
+        this.blog.set(blogId,b);
         console.log(userStatus);
         return true;
     }

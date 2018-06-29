@@ -96,7 +96,9 @@ function initLatest() {
                 }
                 $('<p/ class="content">').text(data[i].content).appendTo("#blog-"+data[i].blogId);
                 $("#blog-"+data[i].blogId).append('<div class="info-section"><b class="thumb-up-pre">👍🏿</b><b class="like-count">'+data[i].like+'</b><b class="thumb-down-pre">👎🏿</b><b class="dislike-count">'+data[i].dislike+'</b><img class="message-img message-btn" src="image/speech-bubble.png"><b class="message-count">'+data[i].messageCount+'</b></div>')
+                $("#blog-"+data[i].blogId).append('<hr class="divide-line">')
                 $("#blog-"+data[i].blogId).append('<div class="message-section"></div>')
+                $("#blog-"+data[i].blogId).append('<div class="input-group mb-3 message-input"><input type="text" class="form-control message-nickname message-align" placeholder="Nickname"><input type="text" class="form-control message-content" placeholder="Message"><div class="input-group-append"><button class="btn btn-outline-secondary" type="button" blogId="'+data[i].blogId+'">send</button></div></div>')
             }
             $(".thumb-up-pre").hover((event) => {
                 event.currentTarget.textContent = "👍";

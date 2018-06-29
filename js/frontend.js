@@ -47,7 +47,6 @@ function test() {
     });
 }
 
-// nebulas call test
 function getBlog(option) {
     api.call({
         chainID: 1,
@@ -59,6 +58,24 @@ function getBlog(option) {
         gasLimit: 2000000,
         contract: {
             function: "getPost",
+            args: JSON.stringify([option])
+        }
+    }).then(function (resp) {
+        console.log(resp);
+    });
+}
+
+function getMessage(option) {
+    api.call({
+        chainID: 1,
+        from: dappAddress,
+        to: dappAddress,
+        value: 0,
+        nonce: 1,
+        gasPrice: 1000000,
+        gasLimit: 2000000,
+        contract: {
+            function: "getMessage",
             args: JSON.stringify([option])
         }
     }).then(function (resp) {
@@ -152,6 +169,24 @@ function addPost(callArgs) {
             console.log(err);
         });
 }
+
+function addMessage(callArgs) {
+    var to = dappAddress;
+    var value = 0;
+    var callFunction = "addMessage";
+   
+    serialNumber =  nebPay.call(to, value, callFunction, callArgs) 
+
+    var options = {callback: NebPay.config.testnetUrl}
+    nebPay.queryPayInfo(serialNumber, options) //search transaction result from server (result upload to server by app)
+        .then(function (resp) {
+            console.log(resp)
+        })
+        .catch(function (err) {
+            console.log(err);
+        });
+}
+
 
 // 獲取用戶地址
 function getUserAddress() {

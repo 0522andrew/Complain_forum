@@ -80,6 +80,13 @@ function getComment(option) {
         }
     }).then(function (resp) {
         console.log(resp);
+        let data = JSON.parse(resp.result);
+        let insert = "";
+        for(let i = 0;i< data.length;i++){
+            insert += '<tr><td class="message-align table-secondary">'+data[i].name+'</td><td class="bg-light">'+data[i].content+'</td></tr>';
+        }
+        console.log(insert);
+        $('<table/ class="table table-bordered table-sm">').text(insert).appendTo("#message-section-"+option);
     });
 }
 
@@ -112,9 +119,9 @@ function initLatest() {
                     $('<p/ class="author">').text(data[i].name).appendTo("#blog-"+data[i].blogId);
                 }
                 $('<p/ class="content">').text(data[i].content).appendTo("#blog-"+data[i].blogId);
-                $("#blog-"+data[i].blogId).append('<div class="info-section"><b class="thumb-up-pre">👍🏿</b><b class="like-count">'+data[i].like+'</b><b class="thumb-down-pre">👎🏿</b><b class="dislike-count">'+data[i].dislike+'</b><img class="message-img message-btn" src="image/speech-bubble.png"><b class="message-count">'+data[i].messageCount+'</b></div>')
+                $("#blog-"+data[i].blogId).append('<div class="info-section"><b class="thumb-up-pre">👍🏿</b><b class="like-count">'+data[i].like+'</b><b class="thumb-down-pre">👎🏿</b><b class="dislike-count">'+data[i].dislike+'</b><img class="message-img message-btn" src="image/speech-bubble.png" blogId="'+data[i].blogId+'"><b class="message-count">'+data[i].messageCount+'</b></div>')
                 $("#blog-"+data[i].blogId).append('<hr class="divide-line">')
-                $("#blog-"+data[i].blogId).append('<div class="message-section"></div>')
+                $("#blog-"+data[i].blogId).append('<div class="message-section" id="message-section-'+data[i].blogId+'"></div>')
                 $("#blog-"+data[i].blogId).append('<form><div class="input-group mb-3 message-input"><input type="text" class="form-control message-nickname message-align" placeholder="Nickname"><input type="text" class="form-control message-content" placeholder="Message" required><div class="input-group-append"><button class="btn btn-outline-secondary" type="submit" onClick="postComment('+"'"+data[i].blogId+"'"+', this.parentNode.parentNode.children[0].value, this.parentNode.parentNode.children[1].value)">send</button></div></div></form>')
             }
             $(".thumb-up-pre").hover((event) => {
@@ -128,6 +135,10 @@ function initLatest() {
             }, (event) => {
                 event.currentTarget.textContent = "👎🏿";
             });
+
+            $(document).on("click", ".message-btn" , function(){
+                getComment($(this).attr("blogId"))
+            })
         }
     });
 }
@@ -155,7 +166,7 @@ function addMessage(callArgs) {
     var value = 0;
     var callFunction = "addMessage";
     console.log(1111111)
-    serialNumber =  nebPay.call(to, value, callFunction, JSON.stringify(callArgs)) 
+    serialNumber =  nebPay.call(to, value, callFunction, callArgs) 
     console.log(2222)
 
     // var options = {callback: NebPay.config.testnetUrl}

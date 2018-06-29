@@ -30,7 +30,7 @@ $(document).ready(() => {
     postBlog = function() {
         var nickname = $("#submit-nickname").val();
         var content = $("#submit-content").val();
-        var callArgs = [
+        let callArgs = [
             content,
             userAddrerss,
             nickname
@@ -40,6 +40,26 @@ $(document).ready(() => {
             addPost(JSON.stringify(callArgs));
         }
     }
+
+    postMessage = function(blogID, nickname, content) {
+        // console.log(blogID);
+        // console.log(name);
+        // console.log(content);
+        let callArgs = [
+            blogID,
+            content,
+            userAddrerss,
+            nickname
+        ];
+        
+        if (content !== '') {
+            addMessage(JSON.stringify(callArgs));
+        }
+    
+    }
+        
+
+
     initLatest()
     
     // $("#generate").click(() => {

@@ -115,7 +115,7 @@ function initLatest() {
                 $("#blog-"+data[i].blogId).append('<div class="info-section"><b class="thumb-up-pre">👍🏿</b><b class="like-count">'+data[i].like+'</b><b class="thumb-down-pre">👎🏿</b><b class="dislike-count">'+data[i].dislike+'</b><img class="message-img message-btn" src="image/speech-bubble.png"><b class="message-count">'+data[i].messageCount+'</b></div>')
                 $("#blog-"+data[i].blogId).append('<hr class="divide-line">')
                 $("#blog-"+data[i].blogId).append('<div class="message-section"></div>')
-                $("#blog-"+data[i].blogId).append('<div class="input-group mb-3 message-input"><input type="text" class="form-control message-nickname message-align" placeholder="Nickname"><input type="text" class="form-control message-content" placeholder="Message"><div class="input-group-append"><button class="btn btn-outline-secondary" type="button" blogId="'+data[i].blogId+'">send</button></div></div>')
+                $("#blog-"+data[i].blogId).append('<form><div class="input-group mb-3 message-input"><input type="text" class="form-control message-nickname message-align" placeholder="Nickname"><input type="text" class="form-control message-content" placeholder="Message" required><div class="input-group-append"><button class="btn btn-outline-secondary" type="submit" onClick="postMessage('+"'"+data[i].blogId+"'"+', this.parentNode.parentNode.children[0].value, this.parentNode.parentNode.children[1].value)">send</button></div></div></form>')
             }
             $(".thumb-up-pre").hover((event) => {
                 event.currentTarget.textContent = "👍";
@@ -162,14 +162,14 @@ function addPost(callArgs) {
     //     });
     // }
 
-    var options = {callback: NebPay.config.testnetUrl}
-    nebPay.queryPayInfo(serialNumber, options) //search transaction result from server (result upload to server by app)
-        .then(function (resp) {
-            console.log(resp)
-        })
-        .catch(function (err) {
-            console.log(err);
-        });
+    // var options = {callback: NebPay.config.testnetUrl}
+    // nebPay.queryPayInfo(serialNumber, options) //search transaction result from server (result upload to server by app)
+    //     .then(function (resp) {
+    //         console.log(resp)
+    //     })
+    //     .catch(function (err) {
+    //         console.log(err);
+    //     });
 }
 
 function addMessage(callArgs) {
@@ -179,14 +179,14 @@ function addMessage(callArgs) {
    
     serialNumber =  nebPay.call(to, value, callFunction, callArgs) 
 
-    var options = {callback: NebPay.config.testnetUrl}
-    nebPay.queryPayInfo(serialNumber, options) //search transaction result from server (result upload to server by app)
-        .then(function (resp) {
-            console.log(resp)
-        })
-        .catch(function (err) {
-            console.log(err);
-        });
+    // var options = {callback: NebPay.config.testnetUrl}
+    // nebPay.queryPayInfo(serialNumber, options) //search transaction result from server (result upload to server by app)
+    //     .then(function (resp) {
+    //         console.log(resp)
+    //     })
+    //     .catch(function (err) {
+    //         console.log(err);
+    //     });
 }
 
 

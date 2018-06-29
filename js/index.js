@@ -30,57 +30,31 @@ $(document).ready(() => {
     postBlog = function() {
         var nickname = $("#submit-nickname").val();
         var content = $("#submit-content").val();
-        let callArgs = [
+        var callArgs = [
             content,
             userAddrerss,
             nickname
         ]
-        
+
+        // console.log(callArgs)
+
         if (content !== '') {
             addPost(JSON.stringify(callArgs));
         }
     }
 
-    postMessage = function(blogID, nickname, content) {
-        // console.log(blogID);
-        // console.log(name);
-        // console.log(content);
-        let callArgs = [
+    postComment = function(blogID, nickname, content) {
+        var callArgs = [
             blogID,
             content,
             userAddrerss,
             nickname
         ];
-        
-        if (content !== '') {
-            addMessage(JSON.stringify(callArgs));
-        }
+
+        addMessage(JSON.stringify(callArgs));
     
     }
-        
-
 
     initLatest()
-    
-    // $("#generate").click(() => {
-    //     $.notify({
-    //         // options
-    //         message: "Querying, please wait." ,
-    //         target: "generate"
-    //     },{
-    //         // settings
-    //         element: "body",
-    //         position: null,
-    //         offset: 20,
-    //         placement: {
-    //             // from: "center",
-    //             align: "right"
-    //         },
-    //         spacing: 20,
-    //         newest_on_top: true,
-    //         timer: 5000,
-    //         z_index: 99999,
-    //         type: 'info'
-    //     });
-    // })   
+  
 });

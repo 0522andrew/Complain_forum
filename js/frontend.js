@@ -93,9 +93,11 @@ function getComment(option) {
             }
             if ($("#message-section-"+option).html() === ""){
                 table.appendTo("#message-section-"+option);
-                setTimeout(function(){
-                    $("#slideDownSection"+option).velocity("slideDown",10000);
-                },1000)
+                // setTimeout(function(){
+                $("#slideDownSection"+option).velocity("stop")
+                $("#slideDownSection"+option).velocity("slideDown",1000);
+                $("#slideDownSection"+option).css({"overflow":""})
+                // },1000)
                 console.log("ff");
             }
         }    
@@ -157,7 +159,9 @@ function initLatest() {
                 if ($("#message-section-"+$(this).attr("blogId")).html() === ""){
                     getComment($(this).attr("blogId"));
                 }else{
-                    $("#message-section-"+$(this).attr("blogId")).html("");
+                    $("#message-section-"+$(this).attr("blogId")).html("")
+                    $("#slideDownSection"+$(this).attr("blogId")).velocity("slideUp",1000);
+                    $("#slideDownSection"+option).css({"overflow":""})
                 }
             })
         }

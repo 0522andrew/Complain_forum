@@ -143,7 +143,7 @@ function initLatest() {
 
 var options = {
     callback: NebPay.config.testnetUrl,   //交易查询服务器地址
-   
+    // listener: checkStatus,
     qrcode: {
 		showQRCode: false,      //是否显示二维码信息
 		container: undefined,    //指定显示二维码的canvas容器，不指定则生成一个默认canvas
@@ -170,29 +170,13 @@ function addMessage(callArgs) {
     var callFunction = "addMessage";
     serialNumber =  nebPay.call(to, value, callFunction, callArgs, options); 
     
-    nebPay.queryPayInfo(serialNumber)   //search transaction result from server (result upload to server by app)
-        .then(function (resp) {
-            console.log("tx result11111111111111111111111: " + resp)   //resp is a JSON string
-            var respObject = JSON.parse(resp)
-            if (respObject.code === 0) {
-                clearInterval(intervalQuery)
-                //addMsg(mymes)
-                alert("发布成功！")
-                //load()
-                //zhezhao()
-            }
-        })
-        .catch(function (err) {
-            console.log(err);
-        });
-    // intervalQuery = setInterval(function () {
-    //     console.log(serialNumber);
-    //     myquery(mymes);
-    // }, 5000);
-    // intervalQuery = setInterval(function() {
-    //         funcIntervalQuery();
-    //     }, 10000); //it's recommended that the query frequency is between 10-15s.
+    intervalQuery = setInterval(function() {
+            funcIntervalQuery();
+        }, 5000); 
 
+    // intervalQuery = setInterval(function () {
+    //     myquery();
+    // }, 5000);
 }
 //Query the result of the transaction. queryPayInfo returns a Promise object.
 function funcIntervalQuery() {   
@@ -200,10 +184,22 @@ function funcIntervalQuery() {
         .then(function (resp) {
             console.log("交易結果循環查找: " + resp)   //resp is a JSON string
             var respObject = JSON.parse(resp)
-            if(respObject.code === 0){
-                //The transaction is successful 
-                // $.notify("sssssuccess!")
-                clearInterval(intervalQuery)    //stop the periodically query 
+            //The transaction is successful 
+            if(respObject.code === 0) {
+                $.notify({
+                    message:"Success post！"
+                }, {
+                    delay: 1000,
+                    timer: 3000
+                });
+                clearInterval(intervalQuery);    //stop the periodically query 
+            } else if (respObject.code === 1) {
+                $.notify({
+                    message:"Querying, please wait."
+                }, {
+                    delay: 1000,
+                    timer: 1000
+                });
             }
         })
         .catch(function (err) {
@@ -211,72 +207,21 @@ function funcIntervalQuery() {
         });
 }
 
-function myquery(mymes) {
+function myquery() {
     nebPay.queryPayInfo(serialNumber)   //search transaction result from server (result upload to server by app)
         .then(function (resp) {
-            console.log("tx result11111111111111111111111: " + resp)   //resp is a JSON string
+            console.log("tx result: " + resp)   //resp is a JSON string
             var respObject = JSON.parse(resp)
             if (respObject.code === 0) {
                 clearInterval(intervalQuery)
-                //addMsg(mymes)
+                
                 alert("发布成功！")
-                //load()
-                //zhezhao()
+                
             }
         })
         .catch(function (err) {
             console.log(err);
         });
-}
-
-
-function listenerFunction(serialNumber,result){
-    $.notify("sssssuccess!")
-
-    console.log(`交易結果： ${serialNumber} is: ` + JSON.stringify(result))
-}
-
-function checkStatus(resp) {
-    console.log("监听");
-    if (resp == "Error: Transaction rejected by user"){
-        console.log(resp);
-        alert("初始化取消！");
-        return false;
-    } else {
-        console.log(resp);
-        console.log("已提交区块链网络，请等待写入区块链！");
-        checkPayStatus(resp.txhash);
-    }
-}
-
-
-function checkPayStatus(txhash) {
-    console.log("checkpaystatas "+txhash);
-
-    $.notify("Querying, please wait.")
-    var timerId = setInterval(function(){
-        api.getTransactionReceipt({
-            hash:txhash
-        }).then(function(receipt){
-            console.log("checkPayStatus");
-            if(receipt.status == 1){
-                clearInterval(timerId);
-                var res = receipt.execute_result;
-                console.log("test success return="+res);
-
-                getBlog();
-
-            }else if(receipt.status == 0){
-                clearInterval(timerId);
-                console.log("test fail err="+receipt.execute_error);
-                alert("失败，请再次尝试！");
-
-                getBlog();
-            }
-        }).catch(function(err){
-            console.log("test error");
-        });
-    },3*1000);
 }
 
 // 獲取用戶地址

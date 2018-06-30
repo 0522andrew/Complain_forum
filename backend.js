@@ -40,6 +40,15 @@ class whetherLikeOrDislike{
     }
 }
 
+class userBlog{
+    constructor(obj){
+        this.blogIds=obj.blogIds;
+    }
+    toString(){
+        return JSON.stringify(this);        
+    }
+}
+
 class Bynorth{
     constructor(){
         LocalContractStorage.defineProperty(this,'blogCount',null)
@@ -70,6 +79,15 @@ class Bynorth{
                 return o.toString();
             }
         });
+        LocalContractStorage.defineMapProperty(this,'userBlog',{
+            parse: function (text) {
+                let obj=JSON.parse(text);
+                return new userBlog(obj);
+            },
+            stringify: function (o) {
+                return o.toString();
+            }
+        })
     }
     init(){
         this.blogCount = 0;
@@ -93,8 +111,17 @@ class Bynorth{
             'like': 0,          //like數
             'dislike': 0,        //dislike數
             'delete': false
-        })
+        });
+        let user=this.userBlog.get(hash);
+        if(!user){
+            user=new userBlog({
+                'blogIds':[blogId]
+            });
+        }else{
+            user.blogIds.push(blogId);
+        }
         this.blog.put(blogId,newBlog);
+        this.userBlog.put(hash,user);
         var r={
             'time': time,
             'blogId': blogId
@@ -270,6 +297,17 @@ class Bynorth{
         this.message.set(messageID,b);
         console.log(userStatus);
         return true;
+    }
+    get_authorBlog(hash){
+        // if(!Blockchain.verifyAddress(hash))
+        //     return {'error':1};
+        let user=this.userBlog.get(hash);
+        console.log(user);
+        let arr= new Array();
+        for(let i=0;i<user.blogIds.length;i++){
+            arr.push(this.blog.get(user.blogIds[i]));
+        }
+        return arr;
     }
 }
 module.exports = Bynorth;

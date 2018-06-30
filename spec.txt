@@ -109,7 +109,7 @@
     ) {
         return array of blog;   //blog所組成的array(沒有就回空array)
     }
-
+    0:hash地址錯誤
     get_message(
         string blogId              //blog的Id
     ) {

@@ -96,9 +96,9 @@ main {
     width: 100px;
 }
 
-#hot-section, #weekly-section, #myblog-section{
+/* #hot-section, #weekly-section, #myblog-section{
     display: none;
-}
+} */
 
 .message-input{
     width: 90%;

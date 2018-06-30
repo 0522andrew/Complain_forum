@@ -202,6 +202,140 @@ function initLatest() {
     });
 }
 
+function initHot() {
+    api.call({
+        chainID: 1,
+        from: dappAddress,
+        to: dappAddress,
+        value: 0,
+        nonce: 1,
+        gasPrice: 1000000,
+        gasLimit: 2000000,
+        contract: {
+            function: "getPost",
+            args: JSON.stringify([0])
+        }
+    }).then(function (resp) {
+        //console.log(resp);
+        if (resp.result === "") {
+            //initLatest();
+        } else {
+            // newestdata = resp.result;
+            // console.log(latestBlogsData)
+            latestBlogsData = resp.result;
+        
+            //$("#latest-section").append()
+            let data = JSON.parse(resp.result);
+            for (let i = 0; i < data.length; i++) {
+                $("#hot-section").append('<div class="blog" id="blog-'+data[i].blogId+'">');
+                if (data[i].name === ""){
+                    $('<p/ class="author" style="color: orange;">').text("Anonymous").appendTo("#blog-"+data[i].blogId);
+                }else{
+                    $('<p/ class="author">').text(data[i].name).appendTo("#blog-"+data[i].blogId);
+                }
+                $('<p/ class="content">').text(data[i].content).appendTo("#blog-"+data[i].blogId);
+                $("#blog-"+data[i].blogId).append('<div class="info-section"><b class="thumb-up-pre" onClick="postLikeDislike(userAddress, '+"'"+data[i].blogId+"'"+', true)">👍🏿</b><b class="like-count">'+data[i].like+'</b><b class="thumb-down-pre" onClick="postLikeDislike(userAddress, '+"'"+data[i].blogId+"'"+', false)">👎🏿</b><b class="dislike-count">'+data[i].dislike+'</b><img class="message-img message-btn" src="image/speech-bubble.png" blogId="'+data[i].blogId+'"><b class="message-count">'+data[i].messageCount+'</b></div>')
+                let slideDownSection = $('<div/ id="slideDownSection'+data[i].blogId+'" style="display:none;">');
+                $('<hr class="divide-line">').appendTo(slideDownSection);
+                $('<div class="message-section" id="message-section-'+data[i].blogId+'"></div>').appendTo(slideDownSection);
+                $('<div class="input-group mb-3 message-input"><input type="text" class="form-control message-nickname message-align" placeholder="Nickname"><input type="text" class="form-control message-content" placeholder="Message" required><div class="input-group-append"><button class="btn btn-outline-secondary" type="button" onClick="postComment('+"'"+data[i].blogId+"'"+', this.parentNode.parentNode.children[0].value, this.parentNode.parentNode.children[1].value, this)">send</button></div></div>').appendTo(slideDownSection);
+                slideDownSection.appendTo($("#blog-"+data[i].blogId));
+                // $("#blog-"+data[i].blogId).append('<hr class="divide-line">')
+                // $("#blog-"+data[i].blogId).append('<div class="message-section" id="message-section-'+data[i].blogId+'" style="display:none;"></div>')
+                // $("#blog-"+data[i].blogId).append('<div class="input-group mb-3 message-input"><input type="text" class="form-control message-nickname message-align" placeholder="Nickname"><input type="text" class="form-control message-content" placeholder="Message" required><div class="input-group-append"><button class="btn btn-outline-secondary" type="button" onClick="postComment('+"'"+data[i].blogId+"'"+', this.parentNode.parentNode.children[0].value, this.parentNode.parentNode.children[1].value)">send</button></div></div>')
+            }
+            $(".thumb-up-pre").hover((event) => {
+                event.currentTarget.textContent = "👍";
+            }, (event) => {
+                event.currentTarget.textContent = "👍🏿";
+            });
+        
+            $(".thumb-down-pre").hover((event) => {
+                event.currentTarget.textContent = "👎";
+            }, (event) => {
+                event.currentTarget.textContent = "👎🏿";
+            });
+        
+            $(document).on("click", ".message-btn" , function(){
+                if ($("#message-section-"+$(this).attr("blogId")).html() === ""){
+                    getComment($(this).attr("blogId"));
+                } else {
+                    $("#slideDownSection"+$(this).attr("blogId")).velocity("slideUp",500);
+                    $("#slideDownSection"+$(this).attr("blogId")).css({"overflow":""})
+                    $("#message-section-"+$(this).attr("blogId")).html("");
+                }
+            })
+        }
+    });
+}
+
+function initMyBlog() {
+    api.call({
+        chainID: 1,
+        from: dappAddress,
+        to: dappAddress,
+        value: 0,
+        nonce: 1,
+        gasPrice: 1000000,
+        gasLimit: 2000000,
+        contract: {
+            function: "get_authorBlog",
+            args: JSON.stringify([userAddress])
+        }
+    }).then(function (resp) {
+        //console.log(resp);
+        if (resp.result === "") {
+            //initLatest();
+        } else {
+            // newestdata = resp.result;
+            // console.log(latestBlogsData)
+            latestBlogsData = resp.result;
+        
+            //$("#latest-section").append()
+            let data = JSON.parse(resp.result);
+            for (let i = 0; i < data.length; i++) {
+                $("#myblog-section").append('<div class="blog" id="blog-'+data[i].blogId+'">');
+                if (data[i].name === ""){
+                    $('<p/ class="author" style="color: orange;">').text("Anonymous").appendTo("#blog-"+data[i].blogId);
+                }else{
+                    $('<p/ class="author">').text(data[i].name).appendTo("#blog-"+data[i].blogId);
+                }
+                $('<p/ class="content">').text(data[i].content).appendTo("#blog-"+data[i].blogId);
+                $("#blog-"+data[i].blogId).append('<div class="info-section"><b class="thumb-up-pre" onClick="postLikeDislike(userAddress, '+"'"+data[i].blogId+"'"+', true)">👍🏿</b><b class="like-count">'+data[i].like+'</b><b class="thumb-down-pre" onClick="postLikeDislike(userAddress, '+"'"+data[i].blogId+"'"+', false)">👎🏿</b><b class="dislike-count">'+data[i].dislike+'</b><img class="message-img message-btn" src="image/speech-bubble.png" blogId="'+data[i].blogId+'"><b class="message-count">'+data[i].messageCount+'</b></div>')
+                let slideDownSection = $('<div/ id="slideDownSection'+data[i].blogId+'" style="display:none;">');
+                $('<hr class="divide-line">').appendTo(slideDownSection);
+                $('<div class="message-section" id="message-section-'+data[i].blogId+'"></div>').appendTo(slideDownSection);
+                $('<div class="input-group mb-3 message-input"><input type="text" class="form-control message-nickname message-align" placeholder="Nickname"><input type="text" class="form-control message-content" placeholder="Message" required><div class="input-group-append"><button class="btn btn-outline-secondary" type="button" onClick="postComment('+"'"+data[i].blogId+"'"+', this.parentNode.parentNode.children[0].value, this.parentNode.parentNode.children[1].value, this)">send</button></div></div>').appendTo(slideDownSection);
+                slideDownSection.appendTo($("#blog-"+data[i].blogId));
+                // $("#blog-"+data[i].blogId).append('<hr class="divide-line">')
+                // $("#blog-"+data[i].blogId).append('<div class="message-section" id="message-section-'+data[i].blogId+'" style="display:none;"></div>')
+                // $("#blog-"+data[i].blogId).append('<div class="input-group mb-3 message-input"><input type="text" class="form-control message-nickname message-align" placeholder="Nickname"><input type="text" class="form-control message-content" placeholder="Message" required><div class="input-group-append"><button class="btn btn-outline-secondary" type="button" onClick="postComment('+"'"+data[i].blogId+"'"+', this.parentNode.parentNode.children[0].value, this.parentNode.parentNode.children[1].value)">send</button></div></div>')
+            }
+            $(".thumb-up-pre").hover((event) => {
+                event.currentTarget.textContent = "👍";
+            }, (event) => {
+                event.currentTarget.textContent = "👍🏿";
+            });
+        
+            $(".thumb-down-pre").hover((event) => {
+                event.currentTarget.textContent = "👎";
+            }, (event) => {
+                event.currentTarget.textContent = "👎🏿";
+            });
+        
+            $(document).on("click", ".message-btn" , function(){
+                if ($("#message-section-"+$(this).attr("blogId")).html() === ""){
+                    getComment($(this).attr("blogId"));
+                } else {
+                    $("#slideDownSection"+$(this).attr("blogId")).velocity("slideUp",500);
+                    $("#slideDownSection"+$(this).attr("blogId")).css({"overflow":""})
+                    $("#message-section-"+$(this).attr("blogId")).html("");
+                }
+            })
+        }
+    });
+}
+
 var options = {
     callback: "https://pay.nebulas.io/api/mainnet/pay",
     qrcode: {

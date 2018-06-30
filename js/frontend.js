@@ -63,7 +63,7 @@ function checkRefreash() {
                 args: '[0]'
             }
         }).then(function (resp) {
-            if (latestBlogsData !== resp.result) {
+            if (JSON.parse(latestBlogsData) !== JSON.parse(resp.result)) {
                 $.notify({
                     message: "Website has new post.Please click HERE to check out!",
                     url: "http://0522andrew.github.io/Complain_forum/",
@@ -154,7 +154,9 @@ function initLatest() {
             //initLatest();
         } else {
             // newestdata = resp.result;
+            // console.log(latestBlogsData)
             latestBlogsData = resp.result;
+        
             //$("#latest-section").append()
             let data = JSON.parse(resp.result);
             for (let i = 0; i < data.length; i++) {

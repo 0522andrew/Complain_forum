@@ -172,16 +172,15 @@ class Bynorth{
         let userStatusId=blogId+'+'+hash;
         let userStatus=this.likeOrDislike.get(userStatusId);
         if(!userStatus){
+            let st;
+            if (likeDislike) {
+                st = 2;
+            } else {
+                st = 1;
+            }   
             userStatus = new whetherLikeOrDislike({
-                'status': function() {
-                        if (likeDislike) {
-                            return 2;
-                        } else {
-                            return 1;
-                        }    ////0(無) or 1(踩) or 2(讚)
-                    }
-                }
-            )
+                'status': st
+            });
             if (likeDislike) {
                 b.like += 1;
             } else {

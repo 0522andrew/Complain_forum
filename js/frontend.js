@@ -85,7 +85,7 @@ function getComment(option) {
             for(let i = 0;i< data.length;i++){
                 let comment_row = $('<tr/>')
                 let comment_col_1 = data[i].name ? $('<td/ class="message-align table-secondary">').text(data[i].name) : $('<td/ class="message-align table-secondary" style="color: orange;">').text("Anonymous");
-                let comment_col_2 = $('<td/ class="message-align table-secondary">').text(data[i].content);
+                let comment_col_2 = $('<td/ class="bg-light">').text(data[i].content);
                 comment_col_1.appendTo(comment_row);
                 comment_col_2.appendTo(comment_row);
                 comment_row.appendTo(table);

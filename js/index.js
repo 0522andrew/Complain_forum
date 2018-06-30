@@ -64,6 +64,6 @@ $(document).ready(() => {
         addLikeDislike(JSON.stringify(callArgs));
     }
 
-    
-    initLatest()
+    initLatest();
+    checkRefreash();
 });

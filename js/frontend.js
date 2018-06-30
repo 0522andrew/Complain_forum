@@ -18,6 +18,7 @@ var dappAddress = "n1poxoXLWkefENggX1ggUQn4mBN3bLyHu9G";    // 主網合約地�
 var serialNumber; //交易序列号
 var intervalQuery; //periodically query tx results
 
+var newestDate;
 var latestBlogsData;
 var hotBlogsData;
 var weeklyBlogData;
@@ -45,6 +46,34 @@ function test() {
         console.log(resp);
         //code
     });
+}
+
+function checkRefreash() {
+    intervalQuery = setInterval(function() {
+        api.call({
+            chainID: 1,
+            from: dappAddress,
+            to: dappAddress,
+            value: 0,
+            nonce: 1,
+            gasPrice: 1000000,
+            gasLimit: 2000000,
+            contract: {
+                function: "getPost",
+                args: '[0]'
+            }
+        }).then(function (resp) {
+            if (latestBlogsData !== resp.result) {
+                $.notify({
+                    message:"Website has new post.Please refreash to check out!"
+                }, {
+                    type: "info",
+                    delay: 5000,
+                    z_index: 9999
+                });
+            }
+        });
+    }, 15000); 
 }
 
 function getBlog(option) {
@@ -79,7 +108,7 @@ function getComment(option) {
             args: JSON.stringify([option])
         }
     }).then(function (resp) {
-        console.log(resp);
+        // console.log(resp);
         let data = JSON.parse(resp.result);
         let table = $('<table/ class="table table-bordered table-sm">');
         if (data.length >= 0){
@@ -122,6 +151,7 @@ function initLatest() {
         if (resp.result === "") {
             //initLatest();
         } else {
+            // newestdata = resp.result;
             latestBlogsData = resp.result;
             //$("#latest-section").append()
             let data = JSON.parse(resp.result);

@@ -186,12 +186,15 @@ function addPost(callArgs) {
     var callFunction = "addPost";
    
     serialNumber =  nebPay.call(to, value, callFunction, callArgs, options) 
-
     intervalQuery = setInterval(function() {
         api.getTransactionReceipt({
             hash: txHash
         }).then(function(receipt) {
             checkStatus(receipt, count);
+            if (receipt.status == 1) {
+                $("#add_blog_model").modal('hide');
+                $("#add_blog_model .form-control").val("");
+            }
             count += 1;
         });
     }, 5000);  
@@ -212,8 +215,6 @@ function addMessage(callArgs, blogID) {
             if (receipt.status == 1) {
                 $("#slideDownSection" + blogID + " .form-control.message-content").val("");
             }
-            // console.log("#slideDownSection" + blogID + " .form-control.message-content");
-
             count += 1;
            
         });

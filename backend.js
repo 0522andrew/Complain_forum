@@ -177,7 +177,7 @@ class Bynorth{
                 st = 2;
             } else {
                 st = 1;
-            }
+            }   
             userStatus = new whetherLikeOrDislike({
                 'status': st
             });
@@ -200,12 +200,12 @@ class Bynorth{
             else{
                 if (likeDislike) {
                     if(userStatus.status!==0)
-                        b.dislike--;
+                        b.dislike -= 1;
                     b.like += 1;
                     userStatus.status = 2;
                 } else {
                     if(userStatus.status!==0)
-                        b.like--;
+                        b.like -= 1;
                     b.dislike += 1;  
                     userStatus.status = 1;
                 }
@@ -214,6 +214,60 @@ class Bynorth{
             this.likeOrDislike.set(userStatusId,userStatus);
         }
         this.blog.set(blogId,b);
+        console.log(userStatus);
+        return true;
+    }
+    messageLikeDislike(hash,messageID,likeDislike){
+        let b=this.message.get(messageID);
+        if(!b)
+            return {'error':0};
+        // if(!Blockchain.verifyAddress(hash))
+        //     return {'error':1};
+        let userStatusId=messageID+'+'+hash;
+        let userStatus=this.likeOrDislike.get(userStatusId);
+        if(!userStatus){
+            let st;
+            if (likeDislike) {
+                st = 2;
+            } else {
+                st = 1;
+            }   
+            userStatus = new whetherLikeOrDislike({
+                'status': st
+            });
+            if (likeDislike) {
+                b.like += 1;
+            } else {
+                b.dislike += 1;  
+            } 
+            this.likeOrDislike.set(userStatusId,userStatus);
+        }
+        else{
+            if(likeDislike && userStatus.status===2){
+                userStatus.status=0;
+                b.like-=1;
+            }
+            else if(!likeDislike && userStatus.status===1){
+                userStatus.status=0;
+                b.dislike-=1;                
+            }
+            else{
+                if (likeDislike) {
+                    if(userStatus.status!==0)
+                        b.dislike -= 1;
+                    b.like += 1;
+                    userStatus.status = 2;
+                } else {
+                    if(userStatus.status!==0)
+                        b.like -= 1;
+                    b.dislike += 1;  
+                    userStatus.status = 1;
+                }
+                // userStatus.status=likeDislike?2:1;
+            }
+            this.likeOrDislike.set(userStatusId,userStatus);
+        }
+        this.message.set(messageID,b);
         console.log(userStatus);
         return true;
     }

@@ -91,7 +91,13 @@ function getComment(option) {
                 comment_col_2.appendTo(comment_row);
                 comment_row.appendTo(table);
             }
-            table.appendTo("#message-section-"+option);  
+            if ($("#message-section-"+option).html() === ""){
+                table.appendTo("#message-section-"+option);
+                setTimeout(function(){
+                    $("#slideDownSection"+option).velocity("slideDown",10000);
+                },1000)
+                console.log("ff");
+            }
         }    
     });
 }
@@ -126,9 +132,14 @@ function initLatest() {
                 }
                 $('<p/ class="content">').text(data[i].content).appendTo("#blog-"+data[i].blogId);
                 $("#blog-"+data[i].blogId).append('<div class="info-section"><b class="thumb-up-pre" onClick="postLikeDislike(userAddress, '+"'"+data[i].blogId+"'"+', true)">👍🏿</b><b class="like-count">'+data[i].like+'</b><b class="thumb-down-pre" onClick="postLikeDislike(userAddress, '+"'"+data[i].blogId+"'"+', false)">👎🏿</b><b class="dislike-count">'+data[i].dislike+'</b><img class="message-img message-btn" src="image/speech-bubble.png" blogId="'+data[i].blogId+'"><b class="message-count">'+data[i].messageCount+'</b></div>')
-                $("#blog-"+data[i].blogId).append('<hr class="divide-line">')
-                $("#blog-"+data[i].blogId).append('<div class="message-section" id="message-section-'+data[i].blogId+'"></div>')
-                $("#blog-"+data[i].blogId).append('<div class="input-group mb-3 message-input"><input type="text" class="form-control message-nickname message-align" placeholder="Nickname"><input type="text" class="form-control message-content" placeholder="Message" required><div class="input-group-append"><button class="btn btn-outline-secondary" type="button" onClick="postComment('+"'"+data[i].blogId+"'"+', this.parentNode.parentNode.children[0].value, this.parentNode.parentNode.children[1].value)">send</button></div></div>')
+                let slideDownSection = $('<div/ id="slideDownSection'+data[i].blogId+'" style="display:none;">');
+                $('<hr class="divide-line">').appendTo(slideDownSection);
+                $('<div class="message-section" id="message-section-'+data[i].blogId+'"></div>').appendTo(slideDownSection);
+                $('<div class="input-group mb-3 message-input"><input type="text" class="form-control message-nickname message-align" placeholder="Nickname"><input type="text" class="form-control message-content" placeholder="Message" required><div class="input-group-append"><button class="btn btn-outline-secondary" type="button" onClick="postComment('+"'"+data[i].blogId+"'"+', this.parentNode.parentNode.children[0].value, this.parentNode.parentNode.children[1].value)">send</button></div></div>').appendTo(slideDownSection);
+                slideDownSection.appendTo($("#blog-"+data[i].blogId));
+                // $("#blog-"+data[i].blogId).append('<hr class="divide-line">')
+                // $("#blog-"+data[i].blogId).append('<div class="message-section" id="message-section-'+data[i].blogId+'" style="display:none;"></div>')
+                // $("#blog-"+data[i].blogId).append('<div class="input-group mb-3 message-input"><input type="text" class="form-control message-nickname message-align" placeholder="Nickname"><input type="text" class="form-control message-content" placeholder="Message" required><div class="input-group-append"><button class="btn btn-outline-secondary" type="button" onClick="postComment('+"'"+data[i].blogId+"'"+', this.parentNode.parentNode.children[0].value, this.parentNode.parentNode.children[1].value)">send</button></div></div>')
             }
             $(".thumb-up-pre").hover((event) => {
                 event.currentTarget.textContent = "👍";

@@ -8,11 +8,12 @@ var api = neb.api;
 var nebPay = new NebPay();
 var userAddrerss;
 
-neb.setRequest(new Nebulas.HttpRequest("https://testnet.nebulas.io"));
+neb.setRequest(new Nebulas.HttpRequest("https://mainnet.nebulas.io"));
+// neb.setRequest(new Nebulas.HttpRequest("https://testnet.nebulas.io"));
 // neb.setRequest(new Nebulas.HttpRequest("http://localhost:8685"));      // 本地節點測試
+var dappAddress = "n1uVXLJ8xfpE3WHji6pGWDw4DNy8r5HBAi6";    // 主網合約地址
+// var dappAddress = 'n1ovn4GPda3qnbk8AHXtvWWpwLkscttudzz'; // 測試網合約地址
 
-var dappAddress = 'n1ovn4GPda3qnbk8AHXtvWWpwLkscttudzz'; // 合約地址
-var testUser = 'n1SZdYuB9kd6kpLBaCgxrPrV29175st5NVD';
 var serialNumber; //交易序列号
 var intervalQuery; //periodically query tx results
 
@@ -142,8 +143,7 @@ function initLatest() {
 }
 
 var options = {
-    callback: NebPay.config.testnetUrl,   //交易查询服务器地址
-    // listener: checkStatus,
+    callback: "https://pay.nebulas.io/api/mainnet/pay",
     qrcode: {
 		showQRCode: false,      //是否显示二维码信息
 		container: undefined,    //指定显示二维码的canvas容器，不指定则生成一个默认canvas
@@ -160,8 +160,9 @@ function addPost(callArgs) {
    
     serialNumber =  nebPay.call(to, value, callFunction, callArgs, options) 
 
-    // nebPay.queryPayInfo(serialNumber, options).then()
-
+    intervalQuery = setInterval(function() {
+        funcIntervalQuery();
+    }, 5000); 
 }
 
 function addMessage(callArgs) {
@@ -171,13 +172,22 @@ function addMessage(callArgs) {
     serialNumber =  nebPay.call(to, value, callFunction, callArgs, options); 
     
     intervalQuery = setInterval(function() {
-            funcIntervalQuery();
-        }, 5000); 
-
-    // intervalQuery = setInterval(function () {
-    //     myquery();
-    // }, 5000);
+        funcIntervalQuery();
+    }, 5000); 
 }
+
+function addLikeDislike(callArgs) {
+    var to = dappAddress;
+    var value = 0;
+    var callFunction = "addPost";
+   
+    serialNumber =  nebPay.call(to, value, callFunction, callArgs, options) 
+
+    intervalQuery = setInterval(function() {
+        funcIntervalQuery();
+    }, 5000); 
+}
+
 //Query the result of the transaction. queryPayInfo returns a Promise object.
 function funcIntervalQuery() {   
     nebPay.queryPayInfo(serialNumber, options)   //search transaction result from server (result upload to server by app)
@@ -200,23 +210,6 @@ function funcIntervalQuery() {
                     delay: 1000,
                     timer: 1000
                 });
-            }
-        })
-        .catch(function (err) {
-            console.log(err);
-        });
-}
-
-function myquery() {
-    nebPay.queryPayInfo(serialNumber)   //search transaction result from server (result upload to server by app)
-        .then(function (resp) {
-            console.log("tx result: " + resp)   //resp is a JSON string
-            var respObject = JSON.parse(resp)
-            if (respObject.code === 0) {
-                clearInterval(intervalQuery)
-                
-                alert("发布成功！")
-                
             }
         })
         .catch(function (err) {

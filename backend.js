@@ -163,39 +163,60 @@ class Bynorth{
         return arr;
     }
     
-    // blogLikeDislike(hash,blogId,likeDislike){
-    //     let b=this.blog.get(blogId);
-    //     if(!b)
-    //         return {'error':0};
-    //     // if(!Blockchain.verifyAddress(hash))
-    //     //     return {'error':1};
-    //     let userStatusId=blogId+'+'+hash;
-    //     let userStatus=this.likeOrDislike.get(userStatusId);
-    //     if(!userStatus){
-    //         userStatus = new whetherLikeOrDislike({
-    //             'status':likeDislike?2:1    ////0(無) or 1(踩) or 2(讚)
-    //         })
-    //         likeDislike? b.like+=1 : b.dislike+=1;
-    //         this.likeOrDislike.set(userStatusId,userStatus);
-    //     }
-    //     else{
-    //         if(likeDislike && userStatus.status===2){
-    //             userStatus.status=0;
-    //             b.like-=1;
-    //         }
-    //         else if(!likeDislike && userStatus.status===1){
-    //             userStatus.status=0;
-    //             b.dislike-=1;                
-    //         }
-    //         else{
-    //             userStatus.status=likeDislike?2:1;
-    //             likeDislike? b.like+=1 : b.dislike+=1;
-    //         }
-    //         this.likeOrDislike.set(userStatusId,userStatus);
-    //     }
-    //     this.blog.set(blogId,b);
-    //     console.log(userStatus);
-    //     return true;
-    // }
+    blogLikeDislike(hash,blogId,likeDislike){
+        let b=this.blog.get(blogId);
+        if(!b)
+            return {'error':0};
+        // if(!Blockchain.verifyAddress(hash))
+        //     return {'error':1};
+        let userStatusId=blogId+'+'+hash;
+        let userStatus=this.likeOrDislike.get(userStatusId);
+        if(!userStatus){
+            userStatus = new whetherLikeOrDislike({
+                'status': function() {
+                        if (likeDislike) {
+                            return 2;
+                        } else {
+                            return 1;
+                        }    ////0(無) or 1(踩) or 2(讚)
+                    }
+                }
+            )
+            if (likeDislike) {
+                b.like += 1;
+            } else {
+                b.dislike += 1;  
+            } 
+            this.likeOrDislike.set(userStatusId,userStatus);
+        }
+        else{
+            if(likeDislike && userStatus.status===2){
+                userStatus.status=0;
+                b.like-=1;
+            }
+            else if(!likeDislike && userStatus.status===1){
+                userStatus.status=0;
+                b.dislike-=1;                
+            }
+            else{
+                if (likeDislike) {
+                    userStatus.status = 2;
+                } else {
+                    userStatus.status = 1;
+                }
+                // userStatus.status=likeDislike?2:1;
+
+               if (likeDislike) {
+                    b.like += 1;
+                } else {
+                    b.dislike += 1;  
+                } 
+            }
+            this.likeOrDislike.set(userStatusId,userStatus);
+        }
+        this.blog.set(blogId,b);
+        console.log(userStatus);
+        return true;
+    }
 }
 module.exports = Bynorth;

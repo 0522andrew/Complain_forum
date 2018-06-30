@@ -36,8 +36,6 @@ $(document).ready(() => {
             nickname
         ]
 
-        // console.log(callArgs)
-
         if (content !== '') {
             addPost(JSON.stringify(callArgs));
         }
@@ -51,8 +49,21 @@ $(document).ready(() => {
             nickname
         ];
 
-        addMessage(JSON.stringify(callArgs));
-    
+        if (content !== '') {
+            addMessage(JSON.stringify(callArgs));
+        }
+    }
+
+    postLikeDislike = function() {
+        var callArgs = [
+            userAddrerss,
+            blogID,
+            likeOrDislike
+        ]
+
+        if (content !== '') {
+            addLikeDislike(JSON.stringify(callArgs));
+        }
     }
 
     initLatest()

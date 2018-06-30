@@ -1,5 +1,3 @@
-// require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-
 "use strict";
 
 var Nebulas = require("nebulas");
@@ -13,7 +11,6 @@ var userAddrerss;
 neb.setRequest(new Nebulas.HttpRequest("https://testnet.nebulas.io"));
 // neb.setRequest(new Nebulas.HttpRequest("http://localhost:8685"));      // 本地節點測試
 
-// var dappAddress = 'n1eM7UXtVosJF7S6ht9q6Mrh8Wftkm4X7wy';   // 合約地址
 var dappAddress = 'n1ovn4GPda3qnbk8AHXtvWWpwLkscttudzz'; // 合約地址
 var testUser = 'n1SZdYuB9kd6kpLBaCgxrPrV29175st5NVD';
 var serialNumber; //交易序列号
@@ -146,7 +143,7 @@ function initLatest() {
 
 var options = {
     callback: NebPay.config.testnetUrl,   //交易查询服务器地址
-    listener: listenerFunction, //为浏览器插件指定listener,处理交易返回结果
+   
     qrcode: {
 		showQRCode: false,      //是否显示二维码信息
 		container: undefined,    //指定显示二维码的canvas容器，不指定则生成一个默认canvas
@@ -163,15 +160,8 @@ function addPost(callArgs) {
    
     serialNumber =  nebPay.call(to, value, callFunction, callArgs, options) 
 
-    nebPay.queryPayInfo(serialNumber, options).then()
-    // var options = {callback: NebPay.config.testnetUrl}
-    // nebPay.queryPayInfo(serialNumber, options) //search transaction result from server (result upload to server by app)
-    //     .then(function (resp) {
-    //         console.log(resp)
-    //     })
-    //     .catch(function (err) {
-    //         console.log(err);
-    //     });
+    // nebPay.queryPayInfo(serialNumber, options).then()
+
 }
 
 function addMessage(callArgs) {
@@ -179,24 +169,59 @@ function addMessage(callArgs) {
     var value = 0;
     var callFunction = "addMessage";
     serialNumber =  nebPay.call(to, value, callFunction, callArgs, options); 
-
-    nebPay.queryPayInfo(serialNumber, options).then()
-
-     intervalQuery = setInterval(function() {
-            funcIntervalQuery();
-        }, 10000); //it's recommended that the query frequency is between 10-15s.
+    
+    nebPay.queryPayInfo(serialNumber)   //search transaction result from server (result upload to server by app)
+        .then(function (resp) {
+            console.log("tx result11111111111111111111111: " + resp)   //resp is a JSON string
+            var respObject = JSON.parse(resp)
+            if (respObject.code === 0) {
+                clearInterval(intervalQuery)
+                //addMsg(mymes)
+                alert("发布成功！")
+                //load()
+                //zhezhao()
+            }
+        })
+        .catch(function (err) {
+            console.log(err);
+        });
+    // intervalQuery = setInterval(function () {
+    //     console.log(serialNumber);
+    //     myquery(mymes);
+    // }, 5000);
+    // intervalQuery = setInterval(function() {
+    //         funcIntervalQuery();
+    //     }, 10000); //it's recommended that the query frequency is between 10-15s.
 
 }
 //Query the result of the transaction. queryPayInfo returns a Promise object.
 function funcIntervalQuery() {   
-    nebPay.queryPayInfo(serialNumber)   //search transaction result from server (result upload to server by app)
+    nebPay.queryPayInfo(serialNumber, options)   //search transaction result from server (result upload to server by app)
         .then(function (resp) {
-            console.log("tx result: " + resp)   //resp is a JSON string
+            console.log("交易結果循環查找: " + resp)   //resp is a JSON string
             var respObject = JSON.parse(resp)
             if(respObject.code === 0){
                 //The transaction is successful 
-                
+                // $.notify("sssssuccess!")
                 clearInterval(intervalQuery)    //stop the periodically query 
+            }
+        })
+        .catch(function (err) {
+            console.log(err);
+        });
+}
+
+function myquery(mymes) {
+    nebPay.queryPayInfo(serialNumber)   //search transaction result from server (result upload to server by app)
+        .then(function (resp) {
+            console.log("tx result11111111111111111111111: " + resp)   //resp is a JSON string
+            var respObject = JSON.parse(resp)
+            if (respObject.code === 0) {
+                clearInterval(intervalQuery)
+                //addMsg(mymes)
+                alert("发布成功！")
+                //load()
+                //zhezhao()
             }
         })
         .catch(function (err) {
@@ -206,6 +231,8 @@ function funcIntervalQuery() {
 
 
 function listenerFunction(serialNumber,result){
+    $.notify("sssssuccess!")
+
     console.log(`交易結果： ${serialNumber} is: ` + JSON.stringify(result))
 }
 
@@ -226,12 +253,9 @@ function checkStatus(resp) {
 function checkPayStatus(txhash) {
     console.log("checkpaystatas "+txhash);
 
-    // $(".add_human_detail").hide();
-    // $(".show_human_detail").hide();
-    // $(".loading_div").show();
     $.notify("Querying, please wait.")
     var timerId = setInterval(function(){
-        nasApi.getTransactionReceipt({
+        api.getTransactionReceipt({
             hash:txhash
         }).then(function(receipt){
             console.log("checkPayStatus");

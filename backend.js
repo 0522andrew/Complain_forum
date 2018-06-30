@@ -177,7 +177,7 @@ class Bynorth{
                 st = 2;
             } else {
                 st = 1;
-            }   
+            }
             userStatus = new whetherLikeOrDislike({
                 'status': st
             });

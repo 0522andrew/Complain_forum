@@ -11,7 +11,7 @@ var userAddress;
 neb.setRequest(new Nebulas.HttpRequest("https://mainnet.nebulas.io"));
 // neb.setRequest(new Nebulas.HttpRequest("https://testnet.nebulas.io"));
 // neb.setRequest(new Nebulas.HttpRequest("http://localhost:8685"));      // 本地節點測試
-var dappAddress = "n1uVXLJ8xfpE3WHji6pGWDw4DNy8r5HBAi6";    // 主網合約地址
+var dappAddress = "n1poxoXLWkefENggX1ggUQn4mBN3bLyHu9G";    // 主網合約地址
 // var dappAddress = 'n1ovn4GPda3qnbk8AHXtvWWpwLkscttudzz'; // 測試網合約地址
 
 var serialNumber; //交易序列号

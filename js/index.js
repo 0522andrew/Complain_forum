@@ -48,8 +48,9 @@ $(document).ready(() => {
             userAddress,
             nickname
         ]
+
         if (content !== '') {
-            addMessage(JSON.stringify(callArgs));
+            addMessage(JSON.stringify(callArgs), blogID);
         }
     }
 
@@ -59,9 +60,10 @@ $(document).ready(() => {
             blogID,
             likeOrDislike
         ]
-
+    
         addLikeDislike(JSON.stringify(callArgs));
     }
 
+    
     initLatest()
 });

@@ -197,7 +197,7 @@ function addPost(callArgs) {
     }, 5000);  
 }
 
-function addMessage(callArgs) {
+function addMessage(callArgs, blogID) {
     var count = 0
     var to = dappAddress;
     var value = 0;
@@ -209,8 +209,13 @@ function addMessage(callArgs) {
             hash: txHash
         }).then(function(receipt) {
             checkStatus(receipt, count);
-            count += 1;
+            if (receipt.status == 1) {
+                $("#slideDownSection" + blogID + " .form-control.message-content").val("");
+            }
+            // console.log("#slideDownSection" + blogID + " .form-control.message-content");
 
+            count += 1;
+           
         });
     }, 5000); 
 }

@@ -199,17 +199,17 @@ class Bynorth{
             }
             else{
                 if (likeDislike) {
+                    if(userStatus.status!==0)
+                        b.dislike--;
+                    b.like += 1;
                     userStatus.status = 2;
                 } else {
+                    if(userStatus.status!==0)
+                        b.like--;
+                    b.dislike += 1;  
                     userStatus.status = 1;
                 }
                 // userStatus.status=likeDislike?2:1;
-
-               if (likeDislike) {
-                    b.like += 1;
-                } else {
-                    b.dislike += 1;  
-                } 
             }
             this.likeOrDislike.set(userStatusId,userStatus);
         }

@@ -65,7 +65,9 @@ function checkRefreash() {
         }).then(function (resp) {
             if (latestBlogsData !== resp.result) {
                 $.notify({
-                    message:"Website has new post.Please refreash to check out!"
+                    message: "Website has new post.Please click HERE to check out!",
+                    url: "http://0522andrew.github.io/Complain_forum/",
+                    target: "_self" 
                 }, {
                     type: "info",
                     delay: 5000,

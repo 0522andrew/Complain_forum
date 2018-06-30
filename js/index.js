@@ -60,10 +60,9 @@ $(document).ready(() => {
             blogID,
             likeOrDislike
         ]
-        
+
         addLikeDislike(JSON.stringify(callArgs));
     }
 
     initLatest()
-  
 });

@@ -183,7 +183,9 @@ class Bynorth{
         let end = b.messageCount;
         let arr=new Array();
         for(let i=begin;i<end;i++){
-            let m=this.message.get(blogId+'-'+i);
+            let messageId=blogId+'-'+i;
+            let m=this.message.get(messageId);
+            m.messageId=messageId;
             if(!m.delete)
                 arr.push(m);
         }
@@ -305,9 +307,17 @@ class Bynorth{
         console.log(user);
         let arr= new Array();
         for(let i=0;i<user.blogIds.length;i++){
-            arr.push(this.blog.get(user.blogIds[i]));
+            let b=this.blog.get(user.blogIds[i]);
+            b.blogId=user.blogIds[i];
+            if(!b.delete)
+                arr.push(b);
         }
         return arr;
+    }
+    get_like(id,hash){
+        let userStatusId=id+'+'+hash;
+        let userStatus=this.likeOrDislike.get(userStatusId);
+        return userStatus.status;
     }
 }
 module.exports = Bynorth;

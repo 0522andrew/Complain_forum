@@ -7,6 +7,7 @@ var neb = new Nebulas.Neb();
 var api = neb.api;
 var nebPay = new NebPay();
 var userAddress;
+var txHash;
 
 neb.setRequest(new Nebulas.HttpRequest("https://mainnet.nebulas.io"));
 // neb.setRequest(new Nebulas.HttpRequest("https://testnet.nebulas.io"));
@@ -164,6 +165,7 @@ var options = {
 
 // nebpay call addPost
 function addPost(callArgs) {
+    var count = 0
     var to = dappAddress;
     var value = 0;
     var callFunction = "addPost";
@@ -171,18 +173,29 @@ function addPost(callArgs) {
     serialNumber =  nebPay.call(to, value, callFunction, callArgs, options) 
 
     intervalQuery = setInterval(function() {
-        funcIntervalQuery();
-    }, 5000); 
+        api.getTransactionReceipt({
+            hash: txHash
+        }).then(function(receipt) {
+            checkStatus(receipt, count);
+            count += 1;
+        });
+    }, 5000);  
 }
 
 function addMessage(callArgs) {
+    var count = 0
     var to = dappAddress;
     var value = 0;
     var callFunction = "addMessage";
     serialNumber =  nebPay.call(to, value, callFunction, callArgs, options); 
     
     intervalQuery = setInterval(function() {
-        funcIntervalQuery();
+        api.getTransactionReceipt({
+            hash: txHash
+        }).then(function(receipt) {
+            checkStatus(receipt, count);
+            count += 1;
+        });
     }, 5000); 
 }
 
@@ -193,42 +206,73 @@ function addLikeDislike(callArgs) {
     var callFunction = "blogLikeDislike";
    
     serialNumber =  nebPay.call(to, value, callFunction, callArgs, options) 
-
+    
     intervalQuery = setInterval(function() {
-        funcIntervalQuery();
+        api.getTransactionReceipt({
+            hash: txHash
+        }).then(function(receipt) {
+            checkStatus(receipt, count);
+            count += 1;
+        });
     }, 5000); 
 }
 
-//Query the result of the transaction. queryPayInfo returns a Promise object.
-function funcIntervalQuery() {   
-    nebPay.queryPayInfo(serialNumber, options)   //search transaction result from server (result upload to server by app)
-        .then(function (resp) {
-            count++;
-            console.log("tx result: " + resp)   //resp is a JSON string
-            var respObject = JSON.parse(resp);
-            //The transaction is successful 
-            if(respObject.code === 0) {
-                $.notify({
-                    message:"Success post！"
-                }, {
-                    delay: 1000,
-                    timer: 3000
-                });
-                clearInterval(intervalQuery);    //stop the periodically query 
-            } else if (respObject.code === 1) {
-                console.log("Querying, please wait.");
-                // $.notify({
-                //     message:"Querying, please wait."
-                // }, {
-                //     delay: 1000,
-                //     timer: 1000
-                // });
-            }
-        })
-        .catch(function (err) {
-            console.log(err);
+function checkStatus(receipt, count) {
+    if (receipt.status == 2 && count == 0) {              // fail
+        $.notify({
+            message:"Submitting, please wait."
+        }, {
+            type: "info",
+            delay: 17000
         });
+    } else if (receipt.status == 1) {       // success
+        $.notify({
+            message:"Submit success！"
+        }, {
+            type: "success",
+            delay: 4000
+        });
+
+        clearInterval(intervalQuery);
+    }
 }
+
+//Query the result of the transaction. queryPayInfo returns a Promise object.
+// function funcIntervalQuery(count) {   
+//     nebPay.queryPayInfo(serialNumber, options)   //search transaction result from server (result upload to server by app)
+//         .then(function (resp) {
+//             console.log("count:");
+//             console.log(count);
+
+//             console.log("tx result: " + resp)   //resp is a JSON string
+//             var respObject = JSON.parse(resp);
+//             //The transaction is successful 
+//             if(respObject.code === 0) {
+//                 $.notify({
+//                     message:"Success post！"
+//                 }, {
+//                     delay: 1000,
+//                     timer: 3000
+//                 });
+//                 clearInterval(intervalQuery);
+//             } else if (respObject.code === 1) {
+//                 console.log("Querying, please wait.");
+//                 if (count >= 6) {
+//                     clearInterval(intervalQuery);    
+//                 }
+//                 $.notify({
+//                     message:"Querying, please wait."
+//                 }, {
+//                     delay: 4000,
+//                     showProgressba: true
+//                     // timer: 1000
+//                 });
+//             }
+//         })
+//         .catch(function (err) {
+//             console.log(err);
+//         });
+// }
 
 // 獲取用戶地址
 function getUserAddress() {
@@ -246,6 +290,9 @@ window.addEventListener('message', function (e) {
     console.log("recived by page:" + e + ", e.data:" + JSON.stringify(e.data));
     if (!!e.data.data && !!e.data.data.account) {
         userAddress = e.data.data.account;
+    }
+    if (!!e.data.resp && !!e.data.resp.txhash) {
+        txHash = e.data.resp.txhash;
     }
 })
 getUserAddress()

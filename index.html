@@ -26,26 +26,24 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form onsubmit="postBlog()">
-                        <div class="modal-body">
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">Nickname:</span>
-                                </div>
-                                <input type="text" class="form-control" id="submit-nickname">
+                    <div class="modal-body">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Nickname:</span>
                             </div>
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">Content:</span>
-                                </div>
-                                <textarea type="text" class="form-control" id="submit-content" rows="5" required></textarea>
+                            <input type="text" class="form-control" id="submit-nickname">
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Content:</span>
                             </div>
+                            <textarea type="text" class="form-control" id="submit-content" rows="5" required></textarea>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" id="submit-blog-btn">add</button>
-                        </div>
-                    </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="submit-blog-btn" onclick="postBlog()">add</button>
+                    </div>                    
                 </div>
             </div>
         </div>

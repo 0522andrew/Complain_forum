@@ -82,7 +82,7 @@ function getComment(option) {
         console.log(resp);
         let data = JSON.parse(resp.result);
         let table = $('<table/ class="table table-bordered table-sm">');
-        if (data.length > 0){
+        if (data.length >= 0){
             for(let i = 0;i< data.length;i++){
                 let comment_row = $('<tr/>')
                 let comment_col_1 = data[i].name ? $('<td/ class="message-align table-secondary">').text(data[i].name) : $('<td/ class="message-align table-secondary" style="color: orange;">').text("Anonymous");
@@ -137,7 +137,7 @@ function initLatest() {
                 let slideDownSection = $('<div/ id="slideDownSection'+data[i].blogId+'" style="display:none;">');
                 $('<hr class="divide-line">').appendTo(slideDownSection);
                 $('<div class="message-section" id="message-section-'+data[i].blogId+'"></div>').appendTo(slideDownSection);
-                $('<div class="input-group mb-3 message-input"><input type="text" class="form-control message-nickname message-align" placeholder="Nickname"><input type="text" class="form-control message-content" placeholder="Message" required><div class="input-group-append"><button class="btn btn-outline-secondary" type="button" onClick="postComment('+"'"+data[i].blogId+"'"+', this.parentNode.parentNode.children[0].value, this.parentNode.parentNode.children[1].value)">send</button></div></div>').appendTo(slideDownSection);
+                $('<div class="input-group mb-3 message-input"><input type="text" class="form-control message-nickname message-align" placeholder="Nickname"><input type="text" class="form-control message-content" placeholder="Message" required><div class="input-group-append"><button class="btn btn-outline-secondary" type="button" onClick="postComment('+"'"+data[i].blogId+"'"+', this.parentNode.parentNode.children[0].value, this.parentNode.parentNode.children[1].value, this)">send</button></div></div>').appendTo(slideDownSection);
                 slideDownSection.appendTo($("#blog-"+data[i].blogId));
                 // $("#blog-"+data[i].blogId).append('<hr class="divide-line">')
                 // $("#blog-"+data[i].blogId).append('<div class="message-section" id="message-section-'+data[i].blogId+'" style="display:none;"></div>')
@@ -158,7 +158,7 @@ function initLatest() {
             $(document).on("click", ".message-btn" , function(){
                 if ($("#message-section-"+$(this).attr("blogId")).html() === ""){
                     getComment($(this).attr("blogId"));
-                }else{
+                } else {
                     $("#slideDownSection"+$(this).attr("blogId")).velocity("slideUp",500);
                     $("#slideDownSection"+$(this).attr("blogId")).css({"overflow":""})
                     $("#message-section-"+$(this).attr("blogId")).html("");
@@ -210,6 +210,7 @@ function addMessage(callArgs) {
         }).then(function(receipt) {
             checkStatus(receipt, count);
             count += 1;
+
         });
     }, 5000); 
 }

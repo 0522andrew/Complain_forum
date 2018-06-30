@@ -47,8 +47,7 @@ $(document).ready(() => {
             content,
             userAddress,
             nickname
-        ];
-
+        ]
         if (content !== '') {
             addMessage(JSON.stringify(callArgs));
         }

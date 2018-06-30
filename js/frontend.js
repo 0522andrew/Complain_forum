@@ -234,56 +234,21 @@ function checkStatus(receipt, count) {
             message:"Submitting, please wait."
         }, {
             type: "info",
-            delay: 17000
+            delay: 17000,
+            z_index: 9999
         });
     } else if (receipt.status == 1) {       // success
         $.notify({
             message:"Submit success！"
         }, {
             type: "success",
-            delay: 4000
+            delay: 4000,
+            z_index: 9999
         });
 
         clearInterval(intervalQuery);
     }
 }
-
-//Query the result of the transaction. queryPayInfo returns a Promise object.
-// function funcIntervalQuery(count) {   
-//     nebPay.queryPayInfo(serialNumber, options)   //search transaction result from server (result upload to server by app)
-//         .then(function (resp) {
-//             console.log("count:");
-//             console.log(count);
-
-//             console.log("tx result: " + resp)   //resp is a JSON string
-//             var respObject = JSON.parse(resp);
-//             //The transaction is successful 
-//             if(respObject.code === 0) {
-//                 $.notify({
-//                     message:"Success post！"
-//                 }, {
-//                     delay: 1000,
-//                     timer: 3000
-//                 });
-//                 clearInterval(intervalQuery);
-//             } else if (respObject.code === 1) {
-//                 console.log("Querying, please wait.");
-//                 if (count >= 6) {
-//                     clearInterval(intervalQuery);    
-//                 }
-//                 $.notify({
-//                     message:"Querying, please wait."
-//                 }, {
-//                     delay: 4000,
-//                     showProgressba: true
-//                     // timer: 1000
-//                 });
-//             }
-//         })
-//         .catch(function (err) {
-//             console.log(err);
-//         });
-// }
 
 // 獲取用戶地址
 function getUserAddress() {

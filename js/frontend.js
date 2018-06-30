@@ -80,12 +80,18 @@ function getComment(option) {
     }).then(function (resp) {
         console.log(resp);
         let data = JSON.parse(resp.result);
-        let insert = "";
-        for(let i = 0;i< data.length;i++){
-            insert += '<tr><td class="message-align table-secondary">'+data[i].name+'</td><td class="bg-light">'+data[i].content+'</td></tr>';
-        }
-        console.log(insert);
-        $('<table/ class="table table-bordered table-sm">').text(insert).appendTo("#message-section-"+option);
+        let table = $('<table/ class="table table-bordered table-sm">');
+        if (data.length > 0){
+            for(let i = 0;i< data.length;i++){
+                let comment_row = $('<tr/>')
+                let comment_col_1 = data[i].name ? $('<td/ class="message-align table-secondary">').text(data[i].name) : $('<td/ class="message-align table-secondary" style="color: orange;">').text("Anonymous");
+                let comment_col_2 = $('<td/ class="message-align table-secondary">').text(data[i].content);
+                comment_col_1.appendTo(comment_row);
+                comment_col_2.appendTo(comment_row);
+                comment_row.appendTo(table);
+            }
+            table.appendTo("#message-section-"+option);  
+        }    
     });
 }
 
@@ -136,7 +142,11 @@ function initLatest() {
             });
         
             $(document).on("click", ".message-btn" , function(){
-                getComment($(this).attr("blogId"))
+                if ($("#message-section-"+$(this).attr("blogId")).html() === ""){
+                    getComment($(this).attr("blogId"));
+                }else{
+                    $("#message-section-"+$(this).attr("blogId")).html("");
+                }
             })
         }
     });

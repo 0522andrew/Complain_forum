@@ -32,7 +32,7 @@ $(document).ready(() => {
         var content = $("#submit-content").val();
         var callArgs = [
             content,
-            userAddrerss,
+            userAddress,
             nickname
         ]
 
@@ -45,7 +45,7 @@ $(document).ready(() => {
         var callArgs = [
             blogID,
             content,
-            userAddrerss,
+            userAddress,
             nickname
         ];
 
@@ -54,16 +54,14 @@ $(document).ready(() => {
         }
     }
 
-    postLikeDislike = function() {
+    postLikeDislike = function(userAddress, blogID, likeOrDislike) {
         var callArgs = [
-            userAddrerss,
+            userAddress,
             blogID,
             likeOrDislike
         ]
-
-        if (content !== '') {
-            addLikeDislike(JSON.stringify(callArgs));
-        }
+        
+        addLikeDislike(JSON.stringify(callArgs));
     }
 
     initLatest()

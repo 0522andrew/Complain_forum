@@ -36,6 +36,10 @@
     margin-left: 10px;
 }
 
+.content{
+    white-space: pre-wrap;
+}
+
 
 /* make footer stick to the bottom by https://stackoverflow.com/questions/3443606/make-footer-stick-to-bottom-of-page-correctly */
 html {

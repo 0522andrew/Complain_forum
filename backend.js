@@ -2,6 +2,7 @@
 
 class Blog{
     constructor(obj){
+        this.blogId = obj.blogId;
         this.content = obj.content;
         this.time = obj.time;
         this.author = obj.author;
@@ -18,6 +19,7 @@ class Blog{
 
 class Message{
     constructor(obj){
+        this.messageId = obj.messageId;
         this.content = obj.content;
         this.time = obj.time;
         this.author = obj.author;
@@ -40,7 +42,7 @@ class whetherLikeOrDislike{
     }
 }
 
-class userBlog{
+class blogContainer{
     constructor(obj){
         this.blogIds=obj.blogIds;
     }
@@ -49,9 +51,11 @@ class userBlog{
     }
 }
 
+
 class Bynorth{
     constructor(){
-        LocalContractStorage.defineProperty(this,'blogCount',null)
+        LocalContractStorage.defineProperty(this,'blogCount',null);
+        LocalContractStorage.defineProperty(this,'hotMin',null);
         LocalContractStorage.defineMapProperty(this,'blog',{
             parse: function (text) {
                 let obj=JSON.parse(text);
@@ -82,15 +86,49 @@ class Bynorth{
         LocalContractStorage.defineMapProperty(this,'userBlog',{
             parse: function (text) {
                 let obj=JSON.parse(text);
-                return new userBlog(obj);
+                return new blogContainer(obj);
             },
             stringify: function (o) {
                 return o.toString();
             }
-        })
+        });
+        this.hotBlog=new Array();
     }
     init(){
         this.blogCount = 0;
+        this.hotMin=0;
+        this.hotBlog=new Array();
+    }
+    updateHot(b){
+        if((b.like+b.dislike)>this.hotMin){
+            this.hotBlog.push(b.blogId);
+            this.hotMin=(b.like+b.dislike);
+        }
+        else if((b.like+b.dislike)==this.hotMin&&this.hotBlog.length<250){
+            this.hotBlog.push(b.blogId);
+            console.log('hi');
+            console.log(b.blogId);
+            console.log(this.hotBlog);            
+        }
+        if(this.hotBlog.length>250){
+            for(let i=0;i<this.hotBlog.length;i++){
+                let nb=this.blog.get(this.hotBlog[i]);
+                if(nb.like+nb.dislike<this.hotMin){
+                    this.hotBlog.splice(i,1);
+                    return;
+                }
+            }
+        }
+        console.log(b);
+        console.log(this.hotBlog);
+        var that=this;
+        this.hotBlog.sort(function(a,b){
+            let B=that.blog.get(b);
+            let A=that.blog.get(a);            
+            return (A.like+A.dislike)-(B.like+B.dislike);
+        });
+        console.log(this.hotBlog);
+        
     }
     test(){
         return this.blogCount;
@@ -103,6 +141,7 @@ class Bynorth{
         let blogId = this.blogCount++;
         let time = new Date();
         let newBlog=new Blog({
+            'blogId' : blogId,
             'content' : content,     //文章內容
             'time': time,         //時間
             'author': hash,       //作者地址
@@ -114,7 +153,7 @@ class Bynorth{
         });
         let user=this.userBlog.get(hash);
         if(!user){
-            user=new userBlog({
+            user=new blogContainer({
                 'blogIds':[blogId]
             });
         }else{
@@ -122,6 +161,7 @@ class Bynorth{
         }
         this.blog.put(blogId,newBlog);
         this.userBlog.put(hash,user);
+        this.updateHot(newBlog);
         var r={
             'time': time,
             'blogId': blogId
@@ -138,7 +178,9 @@ class Bynorth{
         if(content===null||content==="")
             return {'error':2};
         let time=new Date();
+        let messageId=blogId+'-'+b.messageCount;        
         let newMessage=new Message({
+            'messageId' : messageId,
             'content' : content,     //文章內容
             'time': time,         //時間
             'author': hash,       //作者地址
@@ -147,7 +189,6 @@ class Bynorth{
             'dislike': 0,        //dislike數
             'delete': false
         });
-        let messageId=blogId+'-'+b.messageCount;
         this.message.put(messageId,newMessage);
         b.messageCount++;
         this.blog.put(blogId,b);
@@ -160,18 +201,23 @@ class Bynorth{
     }
 
     getPost(option){
-        if(option===0){
+        if(option===0){ //last
             let begin = this.blogCount-1;
             let end = this.blogCount-250;
             if(end<0)end=0;
             let arr=new Array();
             for(let i=begin;i>=end;i--){
                 let b=this.blog.get(i);
-                b.blogId=i;
                 if(!b.delete)
                     arr.push(b);
             }
             return arr;
+        }
+        else if(option===1){//hot
+            return this.hotBlog;
+        }
+        else if(option===2){//一週精華
+
         }
     }
 
@@ -185,7 +231,6 @@ class Bynorth{
         for(let i=begin;i<end;i++){
             let messageId=blogId+'-'+i;
             let m=this.message.get(messageId);
-            m.messageId=messageId;
             if(!m.delete)
                 arr.push(m);
         }
@@ -242,6 +287,7 @@ class Bynorth{
             }
             this.likeOrDislike.set(userStatusId,userStatus);
         }
+        this.updateHot(b);                  
         this.blog.set(blogId,b);
         console.log(userStatus);
         return true;
@@ -308,7 +354,6 @@ class Bynorth{
         let arr= new Array();
         for(let i=0;i<user.blogIds.length;i++){
             let b=this.blog.get(user.blogIds[i]);
-            b.blogId=user.blogIds[i];
             if(!b.delete)
                 arr.push(b);
         }
